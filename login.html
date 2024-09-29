@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Login/Signup - Educational Website</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 400px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .form-container .nav-tabs {
+            background-color: #f8f9fa;
+            border-bottom: none;
+        }
+
+        .form-container .nav-link {
+            color: #495057;
+            border: none;
+            border-radius: 0;
+            padding: 1rem;
+            transition: all 0.3s ease;
+            width: 50%;
+            text-align: center;
+        }
+
+        .form-container .nav-link.active {
+            background-color: #fff;
+            color: #007bff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .tab-content {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            border-radius: 20px;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            border-radius: 20px;
+            padding: 0.75rem 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,123,255,0.3);
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group-text {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            z-index: 10;
+            cursor: pointer;
+        }
+
+        @keyframes shake {
+            0%, 100% {transform: translateX(0);}
+            10%, 30%, 50%, 70%, 90% {transform: translateX(-5px);}
+            20%, 40%, 60%, 80% {transform: translateX(5px);}
+        }
+
+        .shake {
+            animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        .required-field::after {
+            content: "*";
+            color: red;
+            margin-left: 4px;
+        }
+
+        .invalid-feedback {
+            display: none;
+            color: red;
+            font-size: 0.875em;
+            margin-top: 0.25rem;
+        }
+
+        .was-validated .form-control:invalid ~ .invalid-feedback {
+            display: block;
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid #007bff;
+            box-shadow: 0 0 10px rgba(0,123,255,0.5);
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.1);
+        }
+
+        .password-requirements {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: 0.5rem;
+        }
+
+        .requirement-met {
+            color: #28a745;
+        }
+
+        .requirement-not-met {
+            color: #dc3545;
+        }
+
+        @media (max-width: 576px) {
+            .form-container {
+                width: 100%;
+                border-radius: 0;
+            }
+
+            body {
+                padding: 0;
+            }
+
+            .tab-content {
+                padding: 1.5rem;
+            }
+
+            .form-container .nav-link {
+                padding: 0.75rem;
+            }
+
+            .form-label {
+                font-size: 0.9rem;
+            }
+
+            .form-control {
+                font-size: 0.9rem;
+                padding: 0.6rem 0.8rem;
+            }
+
+            .btn-primary {
+                padding: 0.6rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container animate__animated animate__fadeIn">
+        <div class="logo-container">
+            <img src="/api/placeholder/100/100" alt="Educational Logo" class="logo">
+        </div>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item w-50" role="presentation">
+                <button class="nav-link active w-100" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab" aria-controls="login" aria-selected="true">Login</button>
+            </li>
+            <li class="nav-item w-50" role="presentation">
+                <button class="nav-link w-100" id="signup-tab" data-bs-toggle="tab" data-bs-target="#signup" type="button" role="tab" aria-controls="signup" aria-selected="false">Signup</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
+                <form id="login-form" novalidate>
+                    <div class="form-group">
+                        <label for="login-email" class="form-label required-field">Email address</label>
+                        <div class="input-group">
+                            <input type="email" class="form-control" id="login-email" placeholder="Enter your email" required>
+                            <span class="input-group-text">📧</span>
+                        </div>
+                        <div class="invalid-feedback">Please enter a valid email address.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password" class="form-label required-field">Password</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="login-password" placeholder="Enter your password" required>
+                            <span class="input-group-text toggle-password">👁️</span>
+                        </div>
+                        <div class="invalid-feedback">Please enter your password.</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Login</button>
+                </form>
+            </div>
+            <div class="tab-pane fade" id="signup" role="tabpanel" aria-labelledby="signup-tab">
+                <form id="signup-form" novalidate>
+                    <div class="form-group">
+                        <label for="signup-name" class="form-label required-field">Full Name</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="signup-name" placeholder="Enter your full name" required>
+                            <span class="input-group-text">👤</span>
+                        </div>
+                        <div class="invalid-feedback">Please enter your full name.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email" class="form-label required-field">Email address</label>
+                        <div class="input-group">
+                            <input type="email" class="form-control" id="signup-email" placeholder="Enter your email" required>
+                            <span class="input-group-text">📧</span>
+                        </div>
+                        <div class="invalid-feedback">Please enter a valid email address.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password" class="form-label required-field">Password</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="signup-password" placeholder="Enter your password" required>
+                            <span class="input-group-text toggle-password">👁️</span>
+                        </div>
+                        <div class="invalid-feedback">Please enter a valid password.</div>
+                        <div class="password-requirements">
+                            Password must contain:
+                            <div id="uppercase-requirement">At least one uppercase letter</div>
+                            <div id="lowercase-requirement">At least one lowercase letter</div>
+                            <div id="number-requirement">At least one number</div>
+                            <div id="special-requirement">At least one special character</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-confirm-password" class="form-label required-field">Confirm Password</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="signup-confirm-password" placeholder="Confirm your password" required>
+                            <span class="input-group-text toggle-password">👁️</span>
+                        </div>
+                        <div class="invalid-feedback">Please confirm your password.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-image" class="form-label">Profile Image</label>
+                        <input type="file" class="form-control" id="signup-image" accept="image/*">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('login-form');
+            const signupForm = document.getElementById('signup-form');
+            const togglePasswordBtns = document.querySelectorAll('.toggle-password');
+            const formContainer = document.querySelector('.form-container');
+            const loginTab = document.getElementById('login-tab');
+            const signupTab = document.getElementById('signup-tab');
+            const logoImg = document.querySelector('.logo');
+            const signupPassword = document.getElementById('signup-password');
+
+            let userCredentials = null;
+
+            loginForm.addEventListener('submit', handleLogin);
+            signupForm.addEventListener('submit', handleSignup);
+
+            togglePasswordBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const input = this.previousElementSibling;
+                    const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                    input.setAttribute('type', type);
+                    this.textContent = type === 'password' ? '👁️' : '🔒';
+                });
+            });
+
+            function handleSignup(e) {
+                e.preventDefault();
+                const form = e.target;
+                form.classList.add('was-validated');
+
+                if (form.checkValidity() && validatePassword()) {
+                    const email = document.getElementById('signup-email').value;
+                    const password = document.getElementById('signup-password').value;
+                    const confirmPassword = document.getElementById('signup-confirm-password').value;
+
+                    if (password !== confirmPassword) {
+                        alert("Passwords don't match!");
+                        return;
+                    }
+
+                    userCredentials = { email, password };
+                    formContainer.classList.add('animate__animated', 'animate__flipOutY');
+                    setTimeout(() => {
+                        alert('Signup successful! You can now log in with your new account.');
+                        form.reset();
+                        form.classList.remove('was-validated');
+                        formContainer.classList.remove('animate__animated', 'animate__flipOutY');
+                        formContainer.classList.add('animate__animated', 'animate__flipInY');
+                        loginTab.click();
+                        setTimeout(() => formContainer.classList.remove('animate__animated', 'animate__flipInY'), 1000);
+                    }, 1000);
+                } else {
+                    shakeInvalidInputs(form);
+                }
+            }
+
+            function handleLogin(e) {
+                e.preventDefault();
+                const form = e.target;
+                form.classList.add('was-validated');
+
+                if (form.checkValidity()) {
+                    const email = document.getElementById('login-email').value;
+                    const password = document.getElementById('login-password').value;
+
+                    if (userCredentials && email === userCredentials.email && password === userCredentials.password) {
+                        formContainer.classList.add('animate__animated', 'animate__flipOutY');
+                        setTimeout(() => {
+                            alert('Login successful!');
+                            form.reset();
+                            form.classList.remove('was-validated');
+                            formContainer.classList.remove('animate__animated', 'animate__flipOutY');
+                            formContainer.classList.add('animate__animated', 'animate__flipInY');
+                            setTimeout(() => formContainer.classList.remove('animate__animated', 'animate__flipInY'), 1000);
+                        }, 1000);
+                    } else {
+                        alert('Invalid email or password!');
+                    }
+                } else {
+                    shakeInvalidInputs(form);
+                }
+            }
+
+            function shakeInvalidInputs(form) {
+                const invalidInputs = form.querySelectorAll(':invalid');
+                invalidInputs.forEach(input => {
+                    input.classList.add('shake');
+                    setTimeout(() => input.classList.remove('shake'), 820);
+                });
+            }
+
+            function validatePassword() {
+                const password = signupPassword.value;
+                const uppercaseRequirement = /[A-Z]/.test(password);
+                const lowercaseRequirement = /[a-z]/.test(password);
+                const numberRequirement = /\d/.test(password);
+                const specialRequirement = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+
+                document.getElementById('uppercase-requirement').classList.toggle('requirement-met', uppercaseRequirement);
+                document.getElementById('lowercase-requirement').classList.toggle('requirement-met', lowercaseRequirement);
+                document.getElementById('number-requirement').classList.toggle('requirement-met', numberRequirement);
+                document.getElementById('special-requirement').classList.toggle('requirement-met', specialRequirement);
+
+                return uppercaseRequirement && lowercaseRequirement && numberRequirement && specialRequirement;
+            }
+        });
+
+        localStorage.setItem('isLoggedIn', 'true');
+localStorage.setItem('userEmail', 'sujal1220.be23@chitkara.edu.in'); // Replace with actual email
+localStorage.setItem('profileImage', 'images/profile.png'); // Replace with actual image path
+window.location.href = 'Main.html'; // Replace with your main page URL
+    </script>
+</body>
+</html>

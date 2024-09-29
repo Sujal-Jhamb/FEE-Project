@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Educational Website</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --accent-color: #e74c3c;
+            --text-color: #34495e;
+            --bg-color: #ecf0f1;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+        }
+
+        .navbar {
+            background-color: var(--card-bg);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand img {
+            max-height: 60px;
+        }
+
+        .nav-link {
+            color: var(--text-color);
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: #27ae60;
+            border-color: #27ae60;
+        }
+
+        .hero-section {
+            background-color: var(--primary-color);
+            color: var(--card-bg);
+            padding: 4rem 0;
+        }
+
+        .hero-section h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .profile-menu {
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 1rem;
+            display: none;
+        }
+
+        .profile-menu img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+        }
+
+        .dark-mode {
+            --primary-color: #2980b9;
+            --secondary-color: #27ae60;
+            --accent-color: #c0392b;
+            --text-color: #ecf0f1;
+            --bg-color: #2c3e50;
+            --card-bg: #34495e;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .feature-card, .promo-card, .course-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .feature-card:hover, .promo-card:hover, .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px 8px 0 0;
+        }
+
+        footer {
+            background-color: var(--text-color);
+            color: var(--card-bg);
+            padding: 2rem 0;
+        }
+
+        .footer-link {
+            color: var(--bg-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--secondary-color);
+            text-decoration: none;
+        }
+
+        .section-heading {
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .testimonial {
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="./images/EduLogo.png" alt="EduTech Logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Courses</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+                </ul>
+                <div class="ms-3" id="loginContainer">
+                    <button class="btn btn-outline-primary me-2" onclick="location.href='login.html'">Login</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Profile Menu -->
+    <div class="profile-menu" id="profileMenu">
+        <img id="profileImage" src="/api/placeholder/80/80" alt="Profile Picture">
+        <p id="userEmail"></p>
+        <a href="#" class="d-block mb-2">My Account</a>
+        <div class="mb-2">
+            <label class="switch">
+                <input type="checkbox" id="darkModeToggle">
+                <span class="slider"></span>
+            </label>
+            <span id="modeText">Dark Mode</span>
+        </div>
+        <button class="btn btn-danger" onclick="logout()">Logout</button>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-section text-center">
+        <div class="container">
+            <h1>Empower Your Future with EduTech</h1>
+            <p class="lead mb-4">Discover a world of knowledge with our cutting-edge online courses</p>
+            <button class="btn btn-secondary btn-lg">Explore Courses</button>
+        </div>
+    </section>
+
+    <!-- Feature Cards Section -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="section-heading">Why Choose EduTech?</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <h5>Expert Instructors</h5>
+                        <p>Learn from industry professionals with years of experience in their respective fields.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <h5>Hands-on Projects</h5>
+                        <p>Apply your skills with real-world projects and build an impressive portfolio.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <h5>Flexible Learning</h5>
+                        <p>Study at your own pace with 24/7 access to course materials and support.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Promotion Cards Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-heading">Featured Promotions</h2>
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="promo-card">
+                        <img src="./images/WebDev.jpg" alt="Web Development" class="card-img-top mb-3" width="800px" height="400px">
+                        <h5 class="card-title">Web Development Bootcamp</h5>
+                        <p class="card-text">Master full-stack web development in just 12 weeks! Early bird discount available.</p>
+                        <button class="btn btn-primary">Learn More</button>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="promo-card">
+                        <img src="./images/DataScience.jpg" alt="Data Science" class="card-img-top mb-3">
+                        <h5 class="card-title">Data Science Fundamentals</h5>
+                        <p class="card-text">Dive into the world of data analytics and machine learning. Limited spots available!</p>
+                        <button class="btn btn-primary">Enroll Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Course Advertisement Section -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="section-heading">Popular Courses</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="course-card">
+                        <img src="./images/Python.jpg" width="600px" height="400px" alt="Python" class="card-img-top mb-3">
+                        <h5 class="card-title">Python for Beginners</h5>
+                        <p class="card-text">Start your coding journey with Python, the most versatile programming language.</p>
+                        <button class="btn btn-outline-primary">View Course</button>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="course-card">
+                        <img src="./images/UIUX.jpg" width="600px" height="400px" alt="UX/UI Design" class="card-img-top mb-3">
+                        <h5 class="card-title">UX/UI Design Masterclass</h5>
+                        <p class="card-text">Create stunning user interfaces and enhance user experiences.</p>
+                        <button class="btn btn-outline-primary">View Course</button>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="course-card">
+                        <img src="./images/DataMarketing.jpeg" alt="Digital Marketing" class="card-img-top mb-3">
+                        <h5 class="card-title">Digital Marketing Essentials</h5>
+                        <p class="card-text">Master the art of online marketing and grow your business in the digital age.</p>
+                        <button class="btn btn-outline-primary">View Course</button>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="course-card">
+                        <img src="./images/MachineLearning.jpg" alt="Machine Learning" class="card-img-top mb-3">
+                        <h5 class="card-title">Machine Learning Fundamentals</h5>
+                        <p class="card-text">Explore the exciting world of AI and machine learning algorithms.</p>
+                        <button class="btn btn-outline-primary">View Course</button>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="course-card">
+                        <img src="./images/AppDev.jpg" alt="Mobile App Development" class="card-img-top mb-3">
+                        <h5 class="card-title">Mobile App Development</h5>
+                        <p class="card-text">Learn to build native mobile apps for iOS and Android platforms.</p>
+                        <button class="btn btn-outline-primary">View Course</button>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="course-card">
+                        <img src="./images/Blockchain.jpg" alt="Blockchain Technology" class="card-img-top mb-3">
+                        <h5 class="card-title">Blockchain Fundamentals</h5>
+                        <p class="card-text">Understand the core concepts of blockchain and cryptocurrency technologies.</p>
+                        <button class="btn btn-outline-primary">View Course</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-heading">What Our Students Say</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="testimonial">"The Web Development Bootcamp was intense but incredibly rewarding. I landed a job as a junior developer within a month of completing the course!"</p>
+                            <p class="font-weight-bold">- Sarah J., Web Developer</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="testimonial">"The UX/UI Design Masterclass helped me transition from graphic design to UX design. The projects in the course portfolio were crucial in landing my dream job."</p>
+                            <p class="font-weight-bold">- Michael T., UX Designer</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="testimonial">"As a business owner, the Digital Marketing Essentials course gave me the tools to effectively market my company online. Our sales have increased by 30% since implementing what I learned."</p>
+                            <p class="font-weight-bold">- Emily R., Entrepreneur</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5>About EduTech</h5>
+                    <p>We are dedicated to providing quality education and helping students achieve their goals in the ever-evolving world of technology.</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="footer-link">Privacy Policy</a></li>
+                        <li><a href="#" class="footer-link">Terms of Service</a></li>
+                        <li><a href="#" class="footer-link">FAQs</a></li>
+                        <li><a href="#" class="footer-link">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Contact Us</h5>
+                    <p>Email: info@edutech.com</p>
+                    <p>Phone: (123) 456-7890</p>
+                    <p>Address: 123 Learning Street, Education City, 12345</p>
+                </div>
+            </div>
+            <hr>
+            <p class="text-center">&copy; 2024 EduTech. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Check login state on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            if (isLoggedIn === 'true') {
+                showProfileIcon();
+            }
+        });
+
+        // Function to show profile icon
+        function showProfileIcon() {
+            const loginContainer = document.getElementById('loginContainer');
+            loginContainer.innerHTML = '<img src="images/profile.png" alt="Profile" class="profile-icon" onclick="toggleProfileMenu()">';
+            
+            // Set user email
+            const userEmail = localStorage.getItem('userEmail');
+            document.getElementById('userEmail').textContent = userEmail;
+
+            // Set profile image
+            const profileImage = localStorage.getItem('profileImage');
+            if (profileImage) {
+                document.getElementById('profileImage').src = profileImage;
+            }
+        }
+
+        // Toggle profile menu
+        function toggleProfileMenu() {
+            const profileMenu = document.getElementById('profileMenu');
+            profileMenu.style.display = profileMenu.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('profileImage');
+            location.reload();
+        }
+
+        // Dark mode toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const modeText = document.getElementById('modeText');
+
+        darkModeToggle.addEventListener('change', function() {
+            document.body.classList.toggle('dark-mode');
+            modeText.textContent = this.checked ? 'Light Mode' : 'Dark Mode';
+            localStorage.setItem('darkMode', this.checked);
+        });
+
+        // Check dark mode preference on page load
+        if (localStorage.getItem('darkMode') === 'true') {
+            darkModeToggle.checked = true;
+            document.body.classList.add('dark-mode');
+            modeText.textContent = 'Light Mode';
+        }
+    </script>
+</body>
+</html>
