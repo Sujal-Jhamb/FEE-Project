@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | Your Professional Website</title>
+    <title>Sign Up | Your Professional Website</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 
@@ -120,32 +120,6 @@
             padding: 0 5px;
         }
 
-        .remember-forgot {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .remember-me {
-            display: flex;
-            align-items: center;
-        }
-
-        .remember-me input {
-            margin-right: 5px;
-        }
-
-        .forgot-password {
-            color: var(--primary-color);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .forgot-password:hover {
-            color: var(--secondary-color);
-        }
-
         button {
             background-color: var(--primary-color);
             color: var(--white);
@@ -161,39 +135,19 @@
             background-color: var(--secondary-color);
         }
 
-        .google-signin {
-            background-color: var(--white);
-            color: var(--text-color);
-            border: 2px solid #e0e0e0;
-            margin-top: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .google-signin:hover {
-            background-color: #f5f5f5;
-        }
-
-        .google-signin img {
-            width: 20px;
-            margin-right: 10px;
-        }
-
-        .signup-link {
+        .login-link {
             text-align: center;
             margin-top: 20px;
         }
 
-        .signup-link a {
+        .login-link a {
             color: var(--primary-color);
             text-decoration: none;
             font-weight: 600;
             transition: color 0.3s ease;
         }
 
-        .signup-link a:hover {
+        .login-link a:hover {
             color: var(--secondary-color);
         }
 
@@ -214,13 +168,17 @@
     <div class="container">
         <div class="left-side">
             <img src="https://via.placeholder.com/200" alt="Company Logo">
-            <h2>Welcome Back</h2>
-            <p>We're glad to see you again! Access your account and pick up right where you left off.</p>
+            <h2>Join Our Community</h2>
+            <p>Create an account and start your journey with us. Unlock exclusive features and personalized experiences.</p>
         </div>
         <div class="right-side">
-            <h2>Login</h2>
-            <p>Enter your credentials to access your account</p>
-            <form id="loginForm">
+            <h2>Sign Up</h2>
+            <p>Fill in your details to create your account</p>
+            <form id="signupForm">
+                <div class="input-group">
+                    <input type="text" id="fullName" placeholder=" " required>
+                    <label for="fullName">Full Name</label>
+                </div>
                 <div class="input-group">
                     <input type="email" id="email" placeholder=" " required>
                     <label for="email">Email address</label>
@@ -229,64 +187,44 @@
                     <input type="password" id="password" placeholder=" " required>
                     <label for="password">Password</label>
                 </div>
-                <div class="remember-forgot">
-                    <div class="remember-me">
-                        <input type="checkbox" id="rememberMe">
-                        <label for="rememberMe">Remember Me</label>
-                    </div>
-                    <a href="#" class="forgot-password">Forgot Password?</a>
+                <div class="input-group">
+                    <input type="password" id="confirmPassword" placeholder=" " required>
+                    <label for="confirmPassword">Confirm Password</label>
                 </div>
-                <button type="submit">Login</button>
+                <button type="submit">Sign Up</button>
             </form>
-            <button class="google-signin">
-                <img src="https://via.placeholder.com/20" alt="Google logo">
-                <span>Sign In with Google</span>
-            </button>
-            <div class="signup-link">
-                <small>Don't have an account? <a href="signup.html">Sign Up</a></small>
+            <div class="login-link">
+                <small>Already have an account? <a href="login.html">Login</a></small>
             </div>
         </div>
     </div>
-    
+
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            const fullName = document.getElementById('fullName').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const rememberMe = document.getElementById('rememberMe').checked;
+            const confirmPassword = document.getElementById('confirmPassword').value;
 
-            // Get users from localStorage
-            const users = JSON.parse(localStorage.getItem('users')) || [];
-
-            // Check if user exists and password is correct
-            const user = users.find(u => u.email === email && u.password === password);
-
-            if (user) {
-                alert('Login successful!');
-                // In a real application, you would redirect to a dashboard or home page
-                // window.location.href = '/dashboard';
-                
-                if (rememberMe) {
-                    localStorage.setItem('rememberedUser', email);
-                } else {
-                    localStorage.removeItem('rememberedUser');
-                }
-            } else {
-                alert('Invalid email or password. Please try again.');
+            if (password !== confirmPassword) {
+                alert("Passwords don't match. Please try again.");
+                return;
             }
-        });
 
-        // Check for remembered user on page load
-        window.addEventListener('load', function() {
-            const rememberedUser = localStorage.getItem('rememberedUser');
-            if (rememberedUser) {
-                document.getElementById('email').value = rememberedUser;
-                document.getElementById('rememberMe').checked = true;
+            // Check if user already exists
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+            if (users.some(user => user.email === email)) {
+                alert('An account with this email already exists.');
+                return;
             }
-        });
 
-        document.querySelector('.google-signin').addEventListener('click', function() {
-            alert('Google Sign-In functionality not implemented in this example.');
+            // Add new user
+            users.push({ fullName, email, password });
+            localStorage.setItem('users', JSON.stringify(users));
+
+            alert('Account created successfully! You can now log in.');
+            window.location.href = 'login.html';
         });
     </script>
 </body>
