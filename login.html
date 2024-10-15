@@ -232,16 +232,12 @@
                 <div class="remember-forgot">
                     <div class="remember-me">
                         <input type="checkbox" id="rememberMe">
-                        <label for="rememberMe">Remember Me</label>
+                        <label for="rememberMe" style="position: static; transform: none; color: var(--text-color);">Remember Me</label>
                     </div>
                     <a href="#" class="forgot-password">Forgot Password?</a>
                 </div>
                 <button type="submit">Login</button>
             </form>
-            <button class="google-signin">
-                <img src="https://via.placeholder.com/20" alt="Google logo">
-                <span>Sign In with Google</span>
-            </button>
             <div class="signup-link">
                 <small>Don't have an account? <a href="signup.html">Sign Up</a></small>
             </div>
@@ -253,7 +249,6 @@
             e.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const rememberMe = document.getElementById('rememberMe').checked;
 
             // Get users from localStorage
             const users = JSON.parse(localStorage.getItem('users')) || [];
@@ -262,20 +257,13 @@
             const user = users.find(u => u.email === email && u.password === password);
 
             if (user) {
+                localStorage.setItem('loggedInUser', email);
                 alert('Login successful!');
-                // In a real application, you would redirect to a dashboard or home page
-                // window.location.href = '/dashboard';
-                
-                if (rememberMe) {
-                    localStorage.setItem('rememberedUser', email);
-                } else {
-                    localStorage.removeItem('rememberedUser');
-                }
+                window.location.href = 'index.html';
             } else {
-                alert('Invalid email or password. Please try again.');
+                alert('Invalid email or password. Please try again or sign up if you don\'t have an account.');
             }
         });
-
         // Check for remembered user on page load
         window.addEventListener('load', function() {
             const rememberedUser = localStorage.getItem('rememberedUser');

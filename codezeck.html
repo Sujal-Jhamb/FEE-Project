@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Coding Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh; 
+        }
+        .content { flex: 1; }
+        #editor, #playground-editor {
+            width: 100%;
+            height: 400px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        #output, #playground-output {
+            height: 200px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            overflow-y: auto;
+            padding: 10px;
+            background-color: #f8f9fa;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .problem-list {
+            height: 400px;
+            overflow-y: auto;
+        }
+        .coding-area {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 20px;
+        }
+        .language-select-container {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+        }
+        /* Basic Syntax Highlighting */
+        .keyword { color: #07a; }
+        .string { color: #690; }
+        .number { color: #905; }
+        .function { color: #DD4A68; }
+        .comment { color: #999; }
+        .error { color: #e00; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">Advanced Coding Platform</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#playground">Playground</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#problems">Problems</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="content container mt-4">
+        <div id="playground" class="coding-area position-relative">
+            <h2>CodZeck</h2>
+            <p>Practice coding without constraints. Select a language and start coding!</p>
+            <div class="language-select-container">
+                <select id="playground-language-select" class="form-select">
+                    <option value="python">Python</option>
+                    <option value="javascript">JavaScript</option>
+                    <option value="java">Java</option>
+                    <option value="c">C</option>
+                    <option value="cpp">C++</option>
+                </select>
+            </div>
+            <div id="playground-editor"></div>
+            <button id="playground-run-btn" class="btn btn-primary mt-3">Run Code</button>
+            <h3 class="mt-4">Output</h3>
+            <div id="playground-output"></div>
+        </div>
+
+
+        <div id="problems" class="mt-4" style="display: none;">
+            <div class="row">
+                <div class="col-md-4">
+                    <h3>Problem Set</h3>
+                    <div class="problem-list list-group">
+                        <a href="#" class="list-group-item list-group-item-action" data-difficulty="Easy">
+                            Two Sum <span class="badge bg-success float-end">Easy</span>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action" data-difficulty="Medium">
+                            Longest Substring <span class="badge bg-warning float-end">Medium</span>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action" data-difficulty="Hard">
+                            Median of Two Sorted Arrays <span class="badge bg-danger float-end">Hard</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div id="problem-description">
+                        <h2>Select a Problem</h2>
+                        <p>Click on a problem from the list to view its description and start solving.</p>
+                    </div>
+                    <div id="problem-editor" class="coding-area position-relative" style="display: none;">
+                        <div class="language-select-container">
+                            <select id="problem-language-select" class="form-select">
+                                <option value="python">Python</option>
+                                <option value="javascript">JavaScript</option>
+                                <option value="java">Java</option>
+                                <option value="c">C</option>
+                                <option value="cpp">C++</option>
+                            </select>
+                        </div>
+                        <div id="editor"></div>
+                        <button id="run-btn" class="btn btn-primary mt-3">Run Code</button>
+                        <button id="submit-btn" class="btn btn-success mt-3">Submit Solution</button>
+                        <h3 class="mt-4">Output</h3>
+                        <div id="output"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Initialize Ace editors
+        let problemEditor = ace.edit("editor");
+        problemEditor.setTheme("ace/theme/monokai");
+        problemEditor.session.setMode("ace/mode/python");
+
+        let playgroundEditor = ace.edit("playground-editor");
+        playgroundEditor.setTheme("ace/theme/monokai");
+        playgroundEditor.session.setMode("ace/mode/python");
+
+        // Handle language selection for playground
+        document.getElementById('playground-language-select').addEventListener('change', function(e) {
+            let language = e.target.value;
+            playgroundEditor.session.setMode(`ace/mode/${language}`);
+        });
+
+        // Handle language selection for problems
+        document.getElementById('problem-language-select').addEventListener('change', function(e) {
+            let language = e.target.value;
+            problemEditor.session.setMode(`ace/mode/${language}`);
+        });
+
+        // Function to run code (simulated)
+        function runCode(code, language, outputElement) {
+            outputElement.innerHTML = `Running ${language} code...\n`;
+            setTimeout(() => {
+                outputElement.innerHTML += `\nOutput:\n${code}\n\nExecution completed.`;
+            }, 1000);
+        }
+
+        // Handle Run button click for problem
+        document.getElementById('run-btn').addEventListener('click', function() {
+            let code = problemEditor.getValue();
+            let language = document.getElementById('problem-language-select').value;
+            let output = document.getElementById('output');
+            runCode(code, language, output);
+        });
+
+        // Handle Run button click for playground
+        document.getElementById('playground-run-btn').addEventListener('click', function() {
+            let code = playgroundEditor.getValue();
+            let language = document.getElementById('playground-language-select').value;
+            let output = document.getElementById('playground-output');
+            runCode(code, language, output);
+        });
+
+         // Simple syntax highlighting function
+         function highlightSyntax(code, language) {
+            const keywords = {
+                'python': ['def', 'class', 'for', 'while', 'if', 'else', 'elif', 'import', 'from', 'as'],
+                'javascript': ['function', 'var', 'let', 'const', 'if', 'else', 'for', 'while', 'return'],
+                'java': ['public', 'private', 'class', 'interface', 'extends', 'implements', 'void', 'int', 'String'],
+                'c': ['int', 'char', 'float', 'double', 'if', 'else', 'for', 'while', 'return'],
+                'cpp': ['int', 'char', 'float', 'double', 'class', 'public', 'private', 'if', 'else', 'for', 'while']
+            };
+
+            let highlightedCode = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+            // Highlight keywords
+            keywords[language].forEach(keyword => {
+                const regex = new RegExp(`\\b${keyword}\\b`, 'g');
+                highlightedCode = highlightedCode.replace(regex, `<span class="keyword">${keyword}</span>`);
+            });
+
+            // Highlight strings
+            highlightedCode = highlightedCode.replace(/(["'])(?:(?=(\\?))\2.)*?\1/g, '<span class="string">$&</span>');
+
+            // Highlight numbers
+            highlightedCode = highlightedCode.replace(/\b\d+\b/g, '<span class="number">$&</span>');
+
+            // Highlight functions
+            highlightedCode = highlightedCode.replace(/\b(\w+)\(/g, '<span class="function">$1</span>(');
+
+            // Highlight comments (basic, doesn't cover all cases)
+            if (language === 'python') {
+                highlightedCode = highlightedCode.replace(/#.+$/gm, '<span class="comment">$&</span>');
+            } else {
+                highlightedCode = highlightedCode.replace(/\/\/.+$/gm, '<span class="comment">$&</span>');
+            }
+
+            return highlightedCode;
+        }
+
+        // Updated runCode function with basic syntax highlighting
+        function runCode(code, language, outputElement) {
+            outputElement.innerHTML = `Running ${language} code...\n`;
+            setTimeout(() => {
+                let output = `Output:\n${code}\n\nExecution completed.`;
+                let highlightedOutput = highlightSyntax(output, language);
+                outputElement.innerHTML = highlightedOutput;
+            }, 1000);
+        }
+
+        // Simulated error handling function
+        function simulateError(language, outputElement) {
+            let errorMessage;
+            switch(language) {
+                case 'python':
+                    errorMessage = "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\nNameError: name 'undefined_variable' is not defined";
+                    break;
+                case 'javascript':
+                    errorMessage = "Uncaught ReferenceError: undefined_variable is not defined\n    at <anonymous>:1:1";
+                    break;
+                case 'java':
+                    errorMessage = "Exception in thread \"main\" java.lang.RuntimeException: Uncompilable source code - Erroneous tree type: <any>";
+                    break;
+                case 'c':
+                case 'cpp':
+                    errorMessage = "error: 'undefined_variable' was not declared in this scope";
+                    break;
+                default:
+                    errorMessage = "An error occurred.";
+            }
+            outputElement.innerHTML = `<span class="error">${errorMessage}</span>`;
+        }
+
+        // Update event listeners to occasionally simulate errors
+        document.getElementById('run-btn').addEventListener('click', function() {
+            let code = problemEditor.getValue();
+            let language = document.getElementById('problem-language-select').value;
+            let output = document.getElementById('output');
+            if (Math.random() < 0.3) {  // 30% chance of error
+                simulateError(language, output);
+            } else {
+                runCode(code, language, output);
+            }
+        });
+
+        document.getElementById('playground-run-btn').addEventListener('click', function() {
+            let code = playgroundEditor.getValue();
+            let language = document.getElementById('playground-language-select').value;
+            let output = document.getElementById('playground-output');
+            if (Math.random() < 0.3) {  // 30% chance of error
+                simulateError(language, output);
+            } else {
+                runCode(code, language, output);
+            }
+        });
+
+
+        // Handle problem selection
+        document.querySelectorAll('.problem-list a').forEach(item => {
+            item.addEventListener('click', event => {
+                event.preventDefault();
+                let problemName = event.target.textContent.trim().split(' ')[0];
+                let difficulty = event.target.getAttribute('data-difficulty');
+                document.getElementById('problem-description').innerHTML = `
+                    <h2>${problemName}</h2>
+                    <p>Difficulty: <span class="badge bg-${difficulty === 'Easy' ? 'success' : difficulty === 'Medium' ? 'warning' : 'danger'}">${difficulty}</span></p>
+                    <p>This is a placeholder for the problem description. In a real application, you would load the actual problem description here.</p>
+                `;
+                document.getElementById('problem-editor').style.display = 'block';
+            });
+        });
+
+        // Handle navigation
+        document.querySelectorAll('.navbar-nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                let target = this.getAttribute('href').substring(1);
+                document.querySelectorAll('.content > div').forEach(div => {
+                    div.style.display = div.id === target ? 'block' : 'none';
+                });
+            });
+        });
+
+        // Set playground as default view
+        document.querySelector('a[href="#playground"]').click();
+    </script>
+</body>
+</html>
