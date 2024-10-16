@@ -1,86 +1,206 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Coding Platform</title>
+    <meta name="description"
+        content="CodZeck - Advanced coding platform for learning and practicing programming skills">
+    <meta name="keywords" content="coding, programming, learning, challenges, playground">
+    <title>CodZeck - Advanced Coding Platform</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
-        body { 
-            display: flex; 
-            flex-direction: column; 
-            min-height: 100vh; 
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --bg-dark: #2c3e50;
+            --text-light: #ecf0f1;
         }
-        .content { flex: 1; }
-        #editor, #playground-editor {
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            transition: all 0.3s ease;
+        }
+
+        .content {
+            flex: 1;
+        }
+
+        #editor,
+        #playground-editor {
             width: 100%;
             height: 400px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
+            border: 1px solid #34495e;
+            border-radius: 8px;
+            font-size: 16px;
         }
-        #output, #playground-output {
+
+        #output,
+        #playground-output {
             height: 200px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            border: 1px solid #34495e;
+            border-radius: 8px;
             overflow-y: auto;
-            padding: 10px;
-            background-color: #f8f9fa;
-            font-family: monospace;
+            padding: 15px;
+            background-color: #34495e;
+            font-family: 'Courier New', monospace;
             white-space: pre-wrap;
             word-wrap: break-word;
+            color: #2ecc71;
         }
+
         .problem-list {
             height: 400px;
             overflow-y: auto;
+            background-color: #34495e;
+            border-radius: 8px;
         }
+
         .coding-area {
-            background-color: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 4px;
-            padding: 20px;
+            background-color: #34495e;
+            border: 1px solid #2c3e50;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
+
         .language-select-container {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 15px;
+            right: 15px;
             z-index: 1000;
         }
-        /* Basic Syntax Highlighting */
-        .keyword { color: #07a; }
-        .string { color: #690; }
-        .number { color: #905; }
-        .function { color: #DD4A68; }
-        .comment { color: #999; }
-        .error { color: #e00; font-weight: bold; }
+
+        .navbar {
+            background-color: var(--primary-color) !important;
+        }
+
+        .navbar-brand,
+        .nav-link {
+            color: var(--text-light) !important;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-success {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+
+        .list-group-item {
+            background-color: #34495e;
+            color: var(--text-light);
+            border-color: #2c3e50;
+        }
+
+        .list-group-item:hover {
+            background-color: #2c3e50;
+        }
+
+        .keyword {
+            color: #e74c3c;
+        }
+
+        .string {
+            color: #f1c40f;
+        }
+
+        .number {
+            color: #9b59b6;
+        }
+
+        .function {
+            color: #3498db;
+        }
+
+        .comment {
+            color: #95a5a6;
+        }
+
+        .error {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .btn:focus,
+        .form-select:focus {
+            box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.5);
+        }
+
+        .dark-mode {
+            filter: invert(1) hue-rotate(180deg);
+        }
+
+        .font-size-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        #timer {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .coding-area {
+                padding: 15px;
+            }
+
+            #editor,
+            #playground-editor {
+                height: 300px;
+            }
+        }
     </style>
 </head>
+
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="#">Advanced Coding Platform</a>
+            <a class="navbar-brand" href="#"><i class="fas fa-code"></i> CodZeck</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="#playground">Playground</a>
+                        <a class="nav-link" href="#playground"><i class="fas fa-laptop-code"></i> Playground</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#problems">Problems</a>
+                        <a class="nav-link" href="#problems"><i class="fas fa-tasks"></i> Problems</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#profile"><i class="fas fa-user"></i> Profile</a>
                     </li>
                 </ul>
+                <div class="navbar-nav ms-auto">
+                    <button id="darkModeToggle" class="btn btn-outline-light me-2" aria-label="Toggle dark mode">
+                        <i class="fas fa-moon"></i> Dark Mode
+                    </button>
+                    <button id="shareCode" class="btn btn-outline-light" aria-label="Share code">
+                        <i class="fas fa-share"></i> Share
+                    </button>
+                </div>
             </div>
         </div>
     </nav>
 
     <div class="content container mt-4">
         <div id="playground" class="coding-area position-relative">
-            <h2>CodZeck</h2>
+            <h2><i class="fas fa-laptop-code"></i> CodZeck Playground</h2>
             <p>Practice coding without constraints. Select a language and start coding!</p>
             <div class="language-select-container">
-                <select id="playground-language-select" class="form-select">
+                <select id="playground-language-select" class="form-select" aria-label="Select programming language">
                     <option value="python">Python</option>
                     <option value="javascript">JavaScript</option>
                     <option value="java">Java</option>
@@ -89,16 +209,19 @@
                 </select>
             </div>
             <div id="playground-editor"></div>
-            <button id="playground-run-btn" class="btn btn-primary mt-3">Run Code</button>
-            <h3 class="mt-4">Output</h3>
+            <button id="playground-run-btn" class="btn btn-primary mt-3"><i class="fas fa-play"></i> Run Code</button>
+            <button id="playground-save-btn" class="btn btn-secondary mt-3"><i class="fas fa-save"></i> Save
+                Snippet</button>
+            <h3 class="mt-4"><i class="fas fa-terminal"></i> Output</h3>
             <div id="playground-output"></div>
+            <h3 class="mt-4"><i class="fas fa-save"></i> Saved Snippets</h3>
+            <ul id="saved-snippets-list" class="list-group"></ul>
         </div>
-
 
         <div id="problems" class="mt-4" style="display: none;">
             <div class="row">
                 <div class="col-md-4">
-                    <h3>Problem Set</h3>
+                    <h3><i class="fas fa-list"></i> Problem Set</h3>
                     <div class="problem-list list-group">
                         <a href="#" class="list-group-item list-group-item-action" data-difficulty="Easy">
                             Two Sum <span class="badge bg-success float-end">Easy</span>
@@ -113,12 +236,13 @@
                 </div>
                 <div class="col-md-8">
                     <div id="problem-description">
-                        <h2>Select a Problem</h2>
+                        <h2><i class="fas fa-question-circle"></i> Select a Problem</h2>
                         <p>Click on a problem from the list to view its description and start solving.</p>
                     </div>
                     <div id="problem-editor" class="coding-area position-relative" style="display: none;">
                         <div class="language-select-container">
-                            <select id="problem-language-select" class="form-select">
+                            <select id="problem-language-select" class="form-select"
+                                aria-label="Select programming language">
                                 <option value="python">Python</option>
                                 <option value="javascript">JavaScript</option>
                                 <option value="java">Java</option>
@@ -127,186 +251,390 @@
                             </select>
                         </div>
                         <div id="editor"></div>
-                        <button id="run-btn" class="btn btn-primary mt-3">Run Code</button>
-                        <button id="submit-btn" class="btn btn-success mt-3">Submit Solution</button>
-                        <h3 class="mt-4">Output</h3>
+                        <button id="run-btn" class="btn btn-primary mt-3"><i class="fas fa-play"></i> Run Code</button>
+                        <button id="submit-btn" class="btn btn-success mt-3"><i class="fas fa-check"></i> Submit
+                            Solution</button>
+                        <div id="timer" class="mt-3">Time: 00:00</div>
+                        <h3 class="mt-4"><i class="fas fa-terminal"></i> Output</h3>
                         <div id="output"></div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Initialize Ace editors
-        let problemEditor = ace.edit("editor");
-        problemEditor.setTheme("ace/theme/monokai");
-        problemEditor.session.setMode("ace/mode/python");
+        <div id="profile" class="mt-4" style="display: none;">
+            <h2 style="color: var(--secondary-color);"><i class="fas fa-user"></i> User Profile</h2>
+            <div class="card" style="background-color: #2c3e50; border: 1px solid var(--secondary-color); border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);">
+                <div class="card-body text-center">
+                    <img src="https://via.placeholder.com/100" alt="Profile Picture" class="rounded-circle mb-3" style="border: 2px solid var(--secondary-color);">
+                    <h5 class="card-title" style="color: var(--text-light); font-size: 24px;" id="username"></h5>
+                    <p class="card-text" style="color: var(--text-light); font-size: 18px;">
+                        Completed Challenges: <span style="color: var(--secondary-color); font-weight: bold;" id="completedChallenges">15</span>
+                    </p>
+                    <p class="card-text" style="color: var(--text-light); font-size: 18px;">
+                        Current Streak: <span style="color: var(--secondary-color); font-weight: bold;">5 days</span>
+                    </p>
+                    <h6 style="color: var(--text-light); font-size: 18px;">Recent Activity:</h6>
+                    <ul style="color: var(--text-light); font-size: 16px; list-style: none; padding: 0; margin: 0;">
+                        <li style="padding: 10px; border-bottom: 1px solid #ccc;">Solved "Two Sum" - 2 days ago</li>
+                        <li style="padding: 10px;">Completed Java course - 1 week ago</li>
+                    </ul>
+                    <h6 style="color: var(--text-light); font-size: 18px; margin-top: 20px;">Progress:</h6>
+                    <div class="progress mb-2" style="height: 20px;">
+                        <div class="progress-bar" role="progressbar" style="width: 75%; background-color: var(--secondary-color);" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75%</div>
+                    </div>
+                    <h6 style="color: var(--text-light); font-size: 18px;">Achievements:</h6>
+                    <span class="badge bg-success me-1">Beginner</span>
+                    <span class="badge bg-warning text-dark me-1">Intermediate</span>
+                    <span class="badge bg-danger">Advanced</span>
+                    <div class="mt-3">
+                        <button class="btn btn-outline-light" style="margin-right: 10px;" onclick="editProfile()">Edit Profile</button>
+                        <button class="btn btn-outline-danger" onclick="logout()">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        let playgroundEditor = ace.edit("playground-editor");
-        playgroundEditor.setTheme("ace/theme/monokai");
-        playgroundEditor.session.setMode("ace/mode/python");
+        <footer class="bg-dark text-light text-center py-3 mt-5">
+            <p>&copy; 2024 CodZeck. All rights reserved.</p>
+        </footer>
 
-        // Handle language selection for playground
-        document.getElementById('playground-language-select').addEventListener('change', function(e) {
-            let language = e.target.value;
-            playgroundEditor.session.setMode(`ace/mode/${language}`);
-        });
+        <div class="font-size-control">
+            <button id="increaseFontSize" class="btn btn-secondary" aria-label="Increase font size"><i
+                    class="fas fa-plus"></i></button>
+            <button id="decreaseFontSize" class="btn btn-secondary" aria-label="Decrease font size"><i
+                    class="fas fa-minus"></i></button>
+        </div>
 
-        // Handle language selection for problems
-        document.getElementById('problem-language-select').addEventListener('change', function(e) {
-            let language = e.target.value;
-            problemEditor.session.setMode(`ace/mode/${language}`);
-        });
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            // Initialize Ace editors
+            let problemEditor, playgroundEditor;
 
-        // Function to run code (simulated)
-        function runCode(code, language, outputElement) {
-            outputElement.innerHTML = `Running ${language} code...\n`;
-            setTimeout(() => {
-                outputElement.innerHTML += `\nOutput:\n${code}\n\nExecution completed.`;
-            }, 1000);
-        }
+            function initializeEditors() {
+                problemEditor = ace.edit("editor");
+                problemEditor.setTheme("ace/theme/monokai");
+                problemEditor.session.setMode("ace/mode/python");
 
-        // Handle Run button click for problem
-        document.getElementById('run-btn').addEventListener('click', function() {
-            let code = problemEditor.getValue();
-            let language = document.getElementById('problem-language-select').value;
-            let output = document.getElementById('output');
-            runCode(code, language, output);
-        });
+                playgroundEditor = ace.edit("playground-editor");
+                playgroundEditor.setTheme("ace/theme/monokai");
+                playgroundEditor.session.setMode("ace/mode/python");
+            }
 
-        // Handle Run button click for playground
-        document.getElementById('playground-run-btn').addEventListener('click', function() {
-            let code = playgroundEditor.getValue();
-            let language = document.getElementById('playground-language-select').value;
-            let output = document.getElementById('playground-output');
-            runCode(code, language, output);
-        });
-
-         // Simple syntax highlighting function
-         function highlightSyntax(code, language) {
-            const keywords = {
-                'python': ['def', 'class', 'for', 'while', 'if', 'else', 'elif', 'import', 'from', 'as'],
-                'javascript': ['function', 'var', 'let', 'const', 'if', 'else', 'for', 'while', 'return'],
-                'java': ['public', 'private', 'class', 'interface', 'extends', 'implements', 'void', 'int', 'String'],
-                'c': ['int', 'char', 'float', 'double', 'if', 'else', 'for', 'while', 'return'],
-                'cpp': ['int', 'char', 'float', 'double', 'class', 'public', 'private', 'if', 'else', 'for', 'while']
-            };
-
-            let highlightedCode = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-
-            // Highlight keywords
-            keywords[language].forEach(keyword => {
-                const regex = new RegExp(`\\b${keyword}\\b`, 'g');
-                highlightedCode = highlightedCode.replace(regex, `<span class="keyword">${keyword}</span>`);
+            // Lazy load Ace editor
+            window.addEventListener('load', function () {
+                setTimeout(initializeEditors, 1000);
             });
 
-            // Highlight strings
-            highlightedCode = highlightedCode.replace(/(["'])(?:(?=(\\?))\2.)*?\1/g, '<span class="string">$&</span>');
-
-            // Highlight numbers
-            highlightedCode = highlightedCode.replace(/\b\d+\b/g, '<span class="number">$&</span>');
-
-            // Highlight functions
-            highlightedCode = highlightedCode.replace(/\b(\w+)\(/g, '<span class="function">$1</span>(');
-
-            // Highlight comments (basic, doesn't cover all cases)
-            if (language === 'python') {
-                highlightedCode = highlightedCode.replace(/#.+$/gm, '<span class="comment">$&</span>');
-            } else {
-                highlightedCode = highlightedCode.replace(/\/\/.+$/gm, '<span class="comment">$&</span>');
-            }
-
-            return highlightedCode;
-        }
-
-        // Updated runCode function with basic syntax highlighting
-        function runCode(code, language, outputElement) {
-            outputElement.innerHTML = `Running ${language} code...\n`;
-            setTimeout(() => {
-                let output = `Output:\n${code}\n\nExecution completed.`;
-                let highlightedOutput = highlightSyntax(output, language);
-                outputElement.innerHTML = highlightedOutput;
-            }, 1000);
-        }
-
-        // Simulated error handling function
-        function simulateError(language, outputElement) {
-            let errorMessage;
-            switch(language) {
-                case 'python':
-                    errorMessage = "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\nNameError: name 'undefined_variable' is not defined";
-                    break;
-                case 'javascript':
-                    errorMessage = "Uncaught ReferenceError: undefined_variable is not defined\n    at <anonymous>:1:1";
-                    break;
-                case 'java':
-                    errorMessage = "Exception in thread \"main\" java.lang.RuntimeException: Uncompilable source code - Erroneous tree type: <any>";
-                    break;
-                case 'c':
-                case 'cpp':
-                    errorMessage = "error: 'undefined_variable' was not declared in this scope";
-                    break;
-                default:
-                    errorMessage = "An error occurred.";
-            }
-            outputElement.innerHTML = `<span class="error">${errorMessage}</span>`;
-        }
-
-        // Update event listeners to occasionally simulate errors
-        document.getElementById('run-btn').addEventListener('click', function() {
-            let code = problemEditor.getValue();
-            let language = document.getElementById('problem-language-select').value;
-            let output = document.getElementById('output');
-            if (Math.random() < 0.3) {  // 30% chance of error
-                simulateError(language, output);
-            } else {
-                runCode(code, language, output);
-            }
-        });
-
-        document.getElementById('playground-run-btn').addEventListener('click', function() {
-            let code = playgroundEditor.getValue();
-            let language = document.getElementById('playground-language-select').value;
-            let output = document.getElementById('playground-output');
-            if (Math.random() < 0.3) {  // 30% chance of error
-                simulateError(language, output);
-            } else {
-                runCode(code, language, output);
-            }
-        });
-
-
-        // Handle problem selection
-        document.querySelectorAll('.problem-list a').forEach(item => {
-            item.addEventListener('click', event => {
-                event.preventDefault();
-                let problemName = event.target.textContent.trim().split(' ')[0];
-                let difficulty = event.target.getAttribute('data-difficulty');
-                document.getElementById('problem-description').innerHTML = `
-                    <h2>${problemName}</h2>
-                    <p>Difficulty: <span class="badge bg-${difficulty === 'Easy' ? 'success' : difficulty === 'Medium' ? 'warning' : 'danger'}">${difficulty}</span></p>
-                    <p>This is a placeholder for the problem description. In a real application, you would load the actual problem description here.</p>
-                `;
-                document.getElementById('problem-editor').style.display = 'block';
+            // Handle language selection for playground
+            document.getElementById('playground-language-select').addEventListener('change', function (e) {
+                let language = e.target.value;
+                playgroundEditor.session.setMode(`ace/mode/${language}`);
             });
-        });
 
-        // Handle navigation
-        document.querySelectorAll('.navbar-nav a').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                let target = this.getAttribute('href').substring(1);
-                document.querySelectorAll('.content > div').forEach(div => {
-                    div.style.display = div.id === target ? 'block' : 'none';
+            // Handle language selection for problems
+            document.getElementById('problem-language-select').addEventListener('change', function (e) {
+                let language = e.target.value;
+                problemEditor.session.setMode(`ace/mode/${language}`);
+            });
+
+            // Function to run code (simulated)
+            function runCode(code, language, outputElement) {
+                outputElement.innerHTML = `Running ${language} code...\n`;
+                setTimeout(() => {
+                    let output = `Output:\n${code}\n\nExecution completed.`;
+                    let highlightedOutput = highlightSyntax(output, language);
+                    outputElement.innerHTML = highlightedOutput;
+                }, 1000);
+            }
+
+            // Handle Run button click for problem
+            document.getElementById('run-btn').addEventListener('click', function () {
+                let code = problemEditor.getValue();
+                let language = document.getElementById('problem-language-select').value;
+                let output = document.getElementById('output');
+                if (Math.random() < 0.3) {  // 30% chance of error
+                    simulateError(language, output);
+                } else {
+                    runCode(code, language, output);
+                }
+            });
+
+            // Handle Run button click for playground
+            document.getElementById('playground-run-btn').addEventListener('click', function () {
+                let code = playgroundEditor.getValue();
+                let language = document.getElementById('playground-language-select').value;
+                let output = document.getElementById('playground-output');
+                if (Math.random() < 0.3) {  // 30% chance of error
+                    simulateError(language, output);
+                } else {
+                    runCode(code, language, output);
+                }
+            });
+
+            // Simple syntax highlighting function
+            function highlightSyntax(code, language) {
+                const keywords = {
+                    'python': ['def', 'class', 'for', 'while', 'if', 'else', 'elif', 'import', 'from', 'as'],
+                    'javascript': ['function', 'var', 'let', 'const', 'if', 'else', 'for', 'while', 'return'],
+                    'java': ['public', 'private', 'class', 'interface', 'extends', 'implements', 'void', 'int', 'String'],
+                    'c': ['int', 'char', 'float', 'double', 'if', 'else', 'for', 'while', 'return'],
+                    'cpp': ['int', 'char', 'float', 'double', 'class', 'public', 'private', 'if', 'else', 'for', 'while']
+                };
+
+                let highlightedCode = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+                // Highlight keywords
+                keywords[language].forEach(keyword => {
+                    const regex = new RegExp(`\\b${keyword}\\b`, 'g');
+                    highlightedCode = highlightedCode.replace(regex, `<span class="keyword">${keyword}</span>`);
+                });
+
+                // Highlight strings
+                highlightedCode = highlightedCode.replace(/(["'])(?:(?=(\\?))\2.)*?\1/g, '<span class="string">$&</span>');
+
+                // Highlight numbers
+                highlightedCode = highlightedCode.replace(/\b\d+\b/g, '<span class="number">$&</span>');
+
+                // Highlight functions
+                highlightedCode = highlightedCode.replace(/\b(\w+)\(/g, '<span class="function">$1</span>(');
+
+                // Highlight comments (basic, doesn't cover all cases)
+                if (language === 'python') {
+                    highlightedCode = highlightedCode.replace(/#.+$/gm, '<span class="comment">$&</span>');
+                } else {
+                    highlightedCode = highlightedCode.replace(/\/\/.+$/gm, '<span class="comment">$&</span>');
+                }
+
+                return highlightedCode;
+            }
+
+            // Simulated error handling function
+            function simulateError(language, outputElement) {
+                let errorMessage;
+                switch (language) {
+                    case 'python':
+                        errorMessage = "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\nNameError: name 'undefined_variable' is not defined";
+                        break;
+                    case 'javascript':
+                        errorMessage = "Uncaught ReferenceError: undefined_variable is not defined\n    at <anonymous>:1:1";
+                        break;
+                    case 'java':
+                        errorMessage = "Exception in thread \"main\" java.lang.RuntimeException: Uncompilable source code - Erroneous tree type: <any>";
+                        break;
+                    case 'c':
+                    case 'cpp':
+                        errorMessage = "error: 'undefined_variable' was not declared in this scope";
+                        break;
+                    default:
+                        errorMessage = "An error occurred.";
+                }
+                outputElement.innerHTML = `<span class="error">${errorMessage}</span>`;
+            }
+
+            // Handle problem selection
+            document.querySelectorAll('.problem-list a').forEach(item => {
+                item.addEventListener('click', event => {
+                    event.preventDefault();
+                    let problemName = event.target.textContent.trim().split(' ')[0];
+                    let difficulty = event.target.getAttribute('data-difficulty');
+                    document.getElementById('problem-description').innerHTML = `
+            <h2>${problemName}</h2>
+            <p>Difficulty: <span class="badge bg-${difficulty === 'Easy' ? 'success' : difficulty === 'Medium' ? 'warning' : 'danger'}">${difficulty}</span></p>
+            <p>This is a placeholder for the problem description. In a real application, you would load the actual problem description here.</p>
+        `;
+                    document.getElementById('problem-editor').style.display = 'block';
+                    startTimer();
                 });
             });
-        });
 
-        // Set playground as default view
-        document.querySelector('a[href="#playground"]').click();
-    </script>
+            // Handle navigation
+            document.querySelectorAll('.navbar-nav a').forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    let target = this.getAttribute('href').substring(1);
+                    document.querySelectorAll('.content > div').forEach(div => {
+                        div.style.display = div.id === target ? 'block' : 'none';
+                    });
+                });
+            });
+
+            // Set playground as default view
+            document.querySelector('a[href="#playground"]').click();
+
+            // Dark mode toggle
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            darkModeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                const icon = darkModeToggle.querySelector('i');
+                icon.classList.toggle('fa-moon');
+                icon.classList.toggle('fa-sun');
+            });
+
+            // Font size controls
+            const increaseFontSize = document.getElementById('increaseFontSize');
+            const decreaseFontSize = document.getElementById('decreaseFontSize');
+            let currentFontSize = 16;
+
+            increaseFontSize.addEventListener('click', () => {
+                currentFontSize += 2;
+                updateFontSize();
+            });
+
+            decreaseFontSize.addEventListener('click', () => {
+                currentFontSize = Math.max(12, currentFontSize - 2);
+                updateFontSize();
+            });
+
+            function updateFontSize() {
+                document.body.style.fontSize = `${currentFontSize}px`;
+                problemEditor.setFontSize(`${currentFontSize}px`);
+                playgroundEditor.setFontSize(`${currentFontSize}px`);
+            }
+
+            // Timer functionality
+            let timerInterval;
+            let seconds = 0;
+
+            function startTimer() {
+                clearInterval(timerInterval);
+                seconds = 0;
+                updateTimerDisplay();
+                timerInterval = setInterval(updateTimer, 1000);
+            }
+
+            function updateTimer() {
+                seconds++;
+                updateTimerDisplay();
+            }
+
+            function updateTimerDisplay() {
+                const minutes = Math.floor(seconds / 60);
+                const remainingSeconds = seconds % 60;
+                document.getElementById('timer').textContent = `Time: ${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+            }
+
+            // Code sharing functionality
+            document.getElementById('shareCode').addEventListener('click', () => {
+                const code = playgroundEditor.getValue();
+                const language = document.getElementById('playground-language-select').value;
+                const shareableLink = generateShareableLink(code, language);
+                alert(`Share this link: ${shareableLink}`);
+            });
+
+            function generateShareableLink(code, language) {
+                // In a real application, you would send this data to a server and get a unique ID
+                // For this example, we'll just encode it in the URL (not recommended for production)
+                const encodedCode = encodeURIComponent(code);
+                return `https://codzeck.com/share?lang=${language}&code=${encodedCode}`;
+            }
+
+            // Function to save a code snippet
+            function saveCodeSnippet() {
+                const code = playgroundEditor.getValue();
+                const language = document.getElementById('playground-language-select').value;
+                const snippetName = prompt("Enter a name for your snippet:");
+
+                if (snippetName) {
+                    const snippet = {
+                        name: snippetName,
+                        code: code,
+                        language: language,
+                        timestamp: new Date().toISOString()
+                    };
+
+                    let savedSnippets = JSON.parse(localStorage.getItem('savedSnippets')) || [];
+                    savedSnippets.push(snippet);
+                    localStorage.setItem('savedSnippets', JSON.stringify(savedSnippets));
+
+                    alert("Snippet saved successfully!");
+                    updateSavedSnippetsList();
+                }
+            }
+
+            // Function to load a saved snippet
+            function loadCodeSnippet(index) {
+                const savedSnippets = JSON.parse(localStorage.getItem('savedSnippets')) || [];
+                const snippet = savedSnippets[index];
+
+                if (snippet) {
+                    playgroundEditor.setValue(snippet.code);
+                    document.getElementById('playground-language-select').value = snippet.language;
+                    playgroundEditor.session.setMode(`ace/mode/${snippet.language}`);
+                }
+            }
+
+            // Function to update the list of saved snippets
+            function updateSavedSnippetsList() {
+                const savedSnippets = JSON.parse(localStorage.getItem('savedSnippets')) || [];
+                const snippetList = document.getElementById('saved-snippets-list');
+                snippetList.innerHTML = '';
+
+                savedSnippets.forEach((snippet, index) => {
+                    const listItem = document.createElement('li');
+                    listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+                    listItem.innerHTML = `
+            ${snippet.name} 
+            <span class="badge bg-primary rounded-pill">${snippet.language}</span>
+            <button class="btn btn-sm btn-outline-secondary load-snippet" data-index="${index}">Load</button>
+        `;
+                    snippetList.appendChild(listItem);
+                });
+
+                // Add event listeners to load buttons
+                document.querySelectorAll('.load-snippet').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        loadCodeSnippet(e.target.getAttribute('data-index'));
+                    });
+                });
+            }
+
+            // Event listener for the save button
+            document.getElementById('playground-save-btn').addEventListener('click', saveCodeSnippet);
+
+            // Call this function when the page loads to display any previously saved snippets
+            updateSavedSnippetsList();
+
+            // Edit Profile Functionality
+            function editProfile() {
+                // Simulate opening a modal for editing profile
+                const editModal = document.createElement('div');
+                editModal.innerHTML = `
+        <div style="background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);">
+            <h4>Edit Profile</h4>
+            <label for="username">Username:</label>
+            <input type="text" id="username" value="John Doe" style="width: 100%; margin-bottom: 10px;">
+            <label for="completedChallenges">Completed Challenges:</label>
+            <input type="number" id="completedChallenges" value="15" style="width: 100%; margin-bottom: 10px;">
+            <button onclick="saveProfile()">Save</button>
+            <button onclick="closeModal()">Cancel</button>
+        </div>
+    `;
+                document.body.appendChild(editModal);
+            }
+
+            function saveProfile() {
+                alert("Profile updated successfully!");
+                // Here you would typically save the updated profile data.
+                closeModal();
+            }
+
+            function closeModal() {
+                const modal = document.querySelector('div[style*="padding: 20px"]');
+                if (modal) {
+                    document.body.removeChild(modal);
+                }
+            }
+
+            // Logout Functionality
+            function logout() {
+                alert("You have been logged out.");
+                // Here you would typically handle user session management.
+                // For example, you could redirect the user to a login page:
+                window.location.href = "login.html";
+            } 
+        </script>
 </body>
+
 </html>

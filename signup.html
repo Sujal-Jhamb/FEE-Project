@@ -17,6 +17,8 @@
             --light-text-color: #7f8c8d;
             --white: #ffffff;
             --box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            --error-color: #e74c3c;
+            --success-color: #2ecc71;
         }
 
         * {
@@ -151,6 +153,24 @@
             color: var(--secondary-color);
         }
 
+        .error {
+            color: var(--error-color);
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .success {
+            color: var(--success-color);
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        #passwordStrength {
+            height: 5px;
+            margin-top: 5px;
+            border-radius: 2px;
+        }
+
         @media (max-width: 768px) {
             .container {
                 flex-direction: column;
@@ -178,18 +198,23 @@
                 <div class="input-group">
                     <input type="text" id="fullName" placeholder=" " required>
                     <label for="fullName">Full Name</label>
+                    <div id="fullNameError" class="error"></div>
                 </div>
                 <div class="input-group">
                     <input type="email" id="email" placeholder=" " required>
                     <label for="email">Email address</label>
+                    <div id="emailError" class="error"></div>
                 </div>
                 <div class="input-group">
                     <input type="password" id="password" placeholder=" " required>
                     <label for="password">Password</label>
+                    <div id="passwordStrength"></div>
+                    <div id="passwordError" class="error"></div>
                 </div>
                 <div class="input-group">
                     <input type="password" id="confirmPassword" placeholder=" " required>
                     <label for="confirmPassword">Confirm Password</label>
+                    <div id="confirmPasswordError" class="error"></div>
                 </div>
                 <button type="submit">Sign Up</button>
             </form>
@@ -200,31 +225,102 @@
     </div>
 
     <script>
+        // Name validation
+        function validateName(name) {
+            const nameRegex = /^[a-zA-Z\s]{2,50}$/;
+            return nameRegex.test(name);
+        }
+
+        // Email validation
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        // Password strength check
+        function checkPasswordStrength(password) {
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (password.match(/[a-z]+/)) strength++;
+            if (password.match(/[A-Z]+/)) strength++;
+            if (password.match(/[0-9]+/)) strength++;
+            if (password.match(/[$@#&!]+/)) strength++;
+            return strength;
+        }
+
+        // Update password strength indicator
+        function updatePasswordStrength(strength) {
+            const strengthBar = document.getElementById('passwordStrength');
+            const colors = ['', '#e74c3c', '#e67e22', '#f1c40f', '#2ecc71', '#27ae60'];
+            strengthBar.style.width = `${strength * 20}%`;
+            strengthBar.style.backgroundColor = colors[strength];
+        }
+
+        // Form validation
         document.getElementById('signupForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            let isValid = true;
+
             const fullName = document.getElementById('fullName').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
 
+            // Validate full name
+            if (!validateName(fullName)) {
+                document.getElementById('fullNameError').textContent = 'Please enter a valid name (2-50 characters, letters only)';
+                isValid = false;
+            } else {
+                document.getElementById('fullNameError').textContent = '';
+            }
+
+            // Validate email
+            if (!validateEmail(email)) {
+                document.getElementById('emailError').textContent = 'Please enter a valid email address';
+                isValid = false;
+            } else {
+                document.getElementById('emailError').textContent = '';
+            }
+
+            // Validate password
+            const passwordStrength = checkPasswordStrength(password);
+            if (passwordStrength < 3) {
+                document.getElementById('passwordError').textContent = 'Password must be at least 8 characters long and include uppercase, lowercase, numbers, and special characters';
+                isValid = false;
+            } else {
+                document.getElementById('passwordError').textContent = '';
+            }
+
+            // Confirm password
             if (password !== confirmPassword) {
-                alert("Passwords don't match. Please try again.");
-                return;
+                document.getElementById('confirmPasswordError').textContent = "Passwords don't match";
+                isValid = false;
+            } else {
+                document.getElementById('confirmPasswordError').textContent = '';
             }
 
-            // Check if user already exists
-            let users = JSON.parse(localStorage.getItem('users')) || [];
-            if (users.some(user => user.email === email)) {
-                alert('An account with this email already exists.');
-                return;
+            if (isValid) {
+                // Check if user already exists
+                let users = JSON.parse(localStorage.getItem('users')) || [];
+                if (users.some(user => user.email === email)) {
+                    document.getElementById('emailError').textContent = 'An account with this email already exists';
+                    return;
+                }
+
+                // Add new user
+                users.push({ fullName, email, password });
+                localStorage.setItem('users', JSON.stringify(users));
+
+                alert('Account created successfully! You can now log in.');
+                window.location.href = 'login.html';
             }
+        });
 
-            // Add new user
-            users.push({ fullName, email, password });
-            localStorage.setItem('users', JSON.stringify(users));
-
-            alert('Account created successfully! You can now log in.');
-            window.location.href = 'login.html';
+        // Real-time password strength update
+        document.getElementById('password').addEventListener('input', function() {
+            const password = this.value;
+            const strength = checkPasswordStrength(password);
+            updatePasswordStrength(strength);
         });
     </script>
 </body>
