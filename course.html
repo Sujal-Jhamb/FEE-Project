@@ -187,6 +187,132 @@
         #sortDropdown {
             margin-bottom: 1rem;
         }
+
+        .chat-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #4a90e2;
+            color: white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .chat-button i {
+            font-size: 24px;
+        }
+
+        .chat-container {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 300px;
+            height: 400px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            z-index: 1000;
+        }
+
+        .chat-header {
+            background-color: #4a90e2;
+            color: white;
+            padding: 10px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h3 {
+            margin: 0;
+        }
+
+        #close-chat {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 10px;
+        }
+
+        #user-input {
+            flex-grow: 1;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        #send-message {
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            margin-left: 5px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .message {
+            margin-bottom: 10px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            max-width: 80%;
+        }
+
+        .user-message {
+            background-color: #e6f2ff;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+
+        .bot-message {
+            background-color: #f0f0f0;
+            align-self: flex-start;
+        }
+
+        .course-suggestion {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        .course-suggestion h4 {
+            margin-top: 0;
+        }
+
+        .course-suggestion button {
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-top: 5px;
+        }
     </style>
 </head>
 
@@ -204,8 +330,7 @@
                     <li class="nav-item"><a class="nav-link" href="./index.html">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="./course.html">Courses</a></li>
                     <li class="nav-item"><a class="nav-link" href="./codezeck.html">Practice</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="./certification.html">Certifications</a></li>
                 </ul>
             </div>
             <div id="loginContainer">
@@ -267,6 +392,27 @@
             <!-- Course details will be dynamically inserted here -->
         </div>
     </div>
+
+    <!-- Chat button -->
+    <div id="chat-button" class="chat-button">
+        <i class="fas fa-comments"></i>
+    </div>
+
+    <!-- Chat container -->
+    <div id="chat-container" class="chat-container">
+        <div class="chat-header">
+            <h3>EduTech Assistant</h3>
+            <button id="close-chat">×</button>
+        </div>
+        <div id="chat-messages" class="chat-messages"></div>
+        <div class="chat-input">
+            <input type="text" id="user-input" placeholder="Type your message...">
+            <button id="send-message">Send</button>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder"></script>
+
     <script>
         // Course categories
         const courseCategories = [
@@ -570,6 +716,7 @@
                 dateAdded: new Date("2024-03-01")
             }
         ];
+
         // Function to create course cards
         function createCourseCard(course) {
             return `
@@ -743,22 +890,7 @@
             renderCourseList(filteredCourses);
         }
 
-        // Function to sort courses
-        function sortCourses(sortBy) {
-            let sortedCourses = [...courses];
-            switch (sortBy) {
-                case 'popularity':
-                    sortedCourses.sort((a, b) => b.ratingCount - a.ratingCount);
-                    break;
-                case 'rating':
-                    sortedCourses.sort((a, b) => b.rating - a.rating);
-                    break;
-                case 'newest':
-                    sortedCourses.sort((a, b) => b.dateAdded - a.dateAdded);
-                    break;
-            }
-            renderCourseList(sortedCourses);
-        }
+
 
         // Event listener for search button
         document.getElementById('searchButton').addEventListener('click', searchCourses);
@@ -766,16 +898,9 @@
         // Event listener for search input (search as you type)
         document.getElementById('searchInput').addEventListener('input', searchCourses);
 
-        // Event listeners for sort dropdown
-        document.querySelectorAll('#sortDropdown .dropdown-item').forEach(item => {
-            item.addEventListener('click', (e) => {
-                e.preventDefault();
-                const sortBy = e.target.getAttribute('data-sort');
-                sortCourses(sortBy);
-            });
-        });
 
-        // Login functionality (simplified for demonstration)
+
+        // JavaScript for login functionality
         document.addEventListener('DOMContentLoaded', function () {
             const loginButton = document.getElementById('loginButton');
             const loginContainer = document.getElementById('loginContainer');
@@ -785,7 +910,7 @@
             const profileDropdown = document.getElementById('profileDropdown');
 
             function updateLoginState() {
-                const loggedInUser = localStorage.getItem('loggedInUser');
+                const loggedInUser = localStorage.getItem('loggedInUser ');
                 if (loggedInUser) {
                     loginContainer.style.display = 'none';
                     profileContainer.style.display = 'block';
@@ -797,24 +922,22 @@
             }
 
             loginButton.addEventListener('click', function () {
-                const email = prompt("Enter your email to log in:");
-                if (email) {
-                    localStorage.setItem('loggedInUser', email);
-                    updateLoginState();
-                }
+                window.location.href = 'login.html';
             });
 
             logoutButton.addEventListener('click', function () {
-                localStorage.removeItem('loggedInUser');
+                localStorage.removeItem('loggedInUser  ');
                 updateLoginState();
             });
 
+            // Add event listener for dropdown toggle
             profileDropdown.addEventListener('click', function (event) {
                 event.stopPropagation();
                 const dropdownMenu = this.nextElementSibling;
                 dropdownMenu.classList.toggle('show');
             });
 
+            // Close dropdown when clicking outside
             document.addEventListener('click', function (event) {
                 const dropdowns = document.getElementsByClassName('dropdown-menu');
                 for (let i = 0; i < dropdowns.length; i++) {
@@ -826,11 +949,189 @@
             });
 
             updateLoginState();
+
+
+            // Function to sort courses
+            function sortCourses(sortBy) {
+                let sortedCourses = [...courses];
+                switch (sortBy) {
+                    case 'popularity':
+                        sortedCourses.sort((a, b) => b.ratingCount - a.ratingCount);
+                        break;
+                    case 'rating':
+                        sortedCourses.sort((a, b) => b.rating - a.rating);
+                        break;
+                    case 'newest':
+                        sortedCourses.sort((a, b) => b.dateAdded - a.dateAdded);
+                        break;
+                }
+                renderCourseList(sortedCourses);
+             }
+
+            // Event listeners for sort dropdown
+            document.querySelectorAll('#sortDropdown .dropdown-item').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const sortBy = e.target.getAttribute('data-sort');
+                    sortCourses(sortBy);
+                });
+            });
         });
 
         // Initialize the page
         createCategoryButtons();
         renderCourseList();
+
+        let model;
+        let courseData;
+
+        document.addEventListener('DOMContentLoaded', async function () {
+            const chatButton = document.getElementById('chat-button');
+            const chatContainer = document.getElementById('chat-container');
+            const closeChat = document.getElementById('close-chat');
+            const sendMessage = document.getElementById('send-message');
+            const userInput = document.getElementById('user-input');
+            const chatMessages = document.getElementById('chat-messages');
+
+            // Load TensorFlow model
+            model = await tf.loadLayersModel('https://storage.googleapis.com/tfjs-models/tfjs/sentiment_cnn_v1/model.json');
+
+            // Fetch course data from hypothetical API
+            courseData = await fetchCourseData();
+
+            chatButton.addEventListener('click', () => {
+                chatContainer.style.display = 'flex';
+                chatButton.style.display = 'none';
+            });
+
+            closeChat.addEventListener('click', () => {
+                chatContainer.style.display = 'none';
+                chatButton.style.display = 'flex';
+            });
+
+            sendMessage.addEventListener('click', sendUserMessage);
+            userInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendUserMessage();
+                }
+            });
+
+            async function sendUserMessage() {
+                const message = userInput.value.trim();
+                if (message) {
+                    addMessage(message, 'user-message');
+                    userInput.value = '';
+                    const botReply = await getBotReply(message);
+                    addMessage(botReply, 'bot-message');
+                }
+            }
+
+            function addMessage(message, className) {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message', className);
+                messageElement.textContent = message;
+                chatMessages.appendChild(messageElement);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            async function getBotReply(message) {
+                const intent = await classifyIntent(message);
+                let reply;
+
+                switch (intent) {
+                    case 'course_info':
+                        reply = "We offer a wide range of courses. Can you tell me which subject area you're interested in?";
+                        break;
+                    case 'pricing':
+                        reply = "Our course prices vary. We offer flexible payment options and financial aid for eligible students. Which course are you interested in?";
+                        break;
+                    case 'duration':
+                        reply = "Course duration varies from a few weeks to several months. It depends on the program and your learning pace. Which course are you considering?";
+                        break;
+                    case 'certification':
+                        reply = "Yes, upon successful completion of your chosen program, you'll receive a verified certificate.";
+                        break;
+                    case 'career':
+                        reply = "Many of our graduates have successfully transitioned into new careers or advanced in their current roles. We also offer career services and job placement assistance.";
+                        break;
+                    default:
+                        reply = "I'm not sure I understand. Could you rephrase your question?";
+                }
+
+                // Suggest courses based on user message
+                const suggestedCourse = await suggestCourse(message);
+                if (suggestedCourse) {
+                    reply += `\n\nBased on your interest, you might like our ${suggestedCourse.title} course. Would you like more information?`;
+                    addCourseSuggestion(suggestedCourse);
+                }
+
+                return reply;
+            }
+
+            async function classifyIntent(message) {
+                const embedding = await use.load();
+                const sentences = [message];
+                const xPredict = await embedding.embed(sentences);
+                const sentiment = await model.predict(xPredict).data();
+
+                // Simple intent classification based on sentiment
+                if (sentiment[0] > 0.7) return 'course_info';
+                if (sentiment[0] > 0.5) return 'pricing';
+                if (sentiment[0] > 0.3) return 'duration';
+                if (sentiment[0] > 0.1) return 'certification';
+                return 'career';
+            }
+
+            async function suggestCourse(message) {
+                // Simple keyword matching for course suggestion
+                const keywords = {
+                    'web': 'Web Development',
+                    'data': 'Data Science',
+                    'marketing': 'Digital Marketing',
+                    'ai': 'Artificial Intelligence',
+                    'business': 'Business Analytics'
+                };
+
+                for (let [keyword, course] of Object.entries(keywords)) {
+                    if (message.toLowerCase().includes(keyword)) {
+                        return courseData.find(c => c.title === course);
+                    }
+                }
+
+                return null;
+            }
+
+            function addCourseSuggestion(course) {
+                const suggestionElement = document.createElement('div');
+                suggestionElement.classList.add('course-suggestion');
+                suggestionElement.innerHTML = `
+                <h4>${course.title}</h4>
+                <p>${course.description}</p>
+                <button onclick="enrollCourse('${course.id}')">Enroll Now</button>
+            `;
+                chatMessages.appendChild(suggestionElement);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            // Initial bot message
+            addMessage("Hello! How can I assist you today?", 'bot-message');
+        });
+
+        async function fetchCourseData() {
+            // In a real implementation, this would be an API call
+            return [
+                { id: 1, title: 'Web Development', description: 'Learn full-stack web development from scratch.' },
+                { id: 2, title: 'Data Science', description: 'Master the basics of data analysis and machine learning.' },
+                { id: 3, title: 'Digital Marketing', description: 'Learn to create and execute effective marketing strategies.' },
+                { id: 4, title: 'Artificial Intelligence', description: 'Dive into the world of AI and machine learning.' },
+                { id: 5, title: 'Business Analytics', description: 'Learn to make data-driven business decisions.' }
+            ];
+        }
+
+        function enrollCourse(courseId) {
+            // In a real implementation, this would initiate the enrollment process
+            alert(`Enrolling in course with ID: ${courseId}`);
+        }
     </script>
 </body>
 
