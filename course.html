@@ -183,11 +183,6 @@
             margin-right: 0.5rem;
         }
 
-        /* Sort Dropdown Styles */
-        #sortDropdown {
-            margin-bottom: 1rem;
-        }
-
         .chat-button {
             position: fixed;
             bottom: 20px;
@@ -368,17 +363,6 @@
         <div id="categoryContainer" class="mb-4"></div>
 
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <div id="sortDropdown" class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="sortButton"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                    Sort by
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="sortButton">
-                    <li><a class="dropdown-item" href="#" data-sort="popularity">Popularity</a></li>
-                    <li><a class="dropdown-item" href="#" data-sort="rating">Rating</a></li>
-                    <li><a class="dropdown-item" href="#" data-sort="newest">Newest</a></li>
-                </ul>
-            </div>
             <div id="courseCount" class="text-muted"></div>
         </div>
 
@@ -392,26 +376,8 @@
             <!-- Course details will be dynamically inserted here -->
         </div>
     </div>
-
-    <!-- Chat button -->
-    <div id="chat-button" class="chat-button">
-        <i class="fas fa-comments"></i>
-    </div>
-
-    <!-- Chat container -->
-    <div id="chat-container" class="chat-container">
-        <div class="chat-header">
-            <h3>EduTech Assistant</h3>
-            <button id="close-chat">×</button>
-        </div>
-        <div id="chat-messages" class="chat-messages"></div>
-        <div class="chat-input">
-            <input type="text" id="user-input" placeholder="Type your message...">
-            <button id="send-message">Send</button>
-        </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
 
     <script>
         // Course categories
@@ -832,14 +798,46 @@
             }
         }
 
-        // Function to render course list
+        function createCategoryButtons() {
+            const categoryContainer = document.getElementById('categoryContainer');
+            categoryContainer.innerHTML = `
+        <button class="btn btn-outline-primary me-2 mb-2" data-category="all">All Courses</button>
+        ${courseCategories.map((category) =>
+                `<button class="btn btn-outline-primary me-2 mb-2" data-category="${category}">${category}</button>`
+            ).join('')}
+    `;
+
+            // Add event listeners to category buttons
+            const buttons = categoryContainer.querySelectorAll('button');
+            buttons.forEach((button) => {
+                button.addEventListener('click', (e) => {
+                    const category = e.target.getAttribute('data-category');
+
+                    // Remove active class from all buttons
+                    buttons.forEach(btn => btn.classList.remove('active', 'btn-primary'));
+
+                    // Add active class to clicked button
+                    e.target.classList.add('active', 'btn-primary');
+
+                    if (category === 'all') {
+                        // If "All Courses" is clicked, show all courses
+                        renderCourseList(courses);
+                    } else {
+                        // Otherwise, filter by the selected category
+                        renderCourseList(courses, category);
+                    }
+                });
+            });
+
+            // Set "All Courses" as active by default
+            const allCoursesButton = categoryContainer.querySelector('[data-category="all"]');
+            allCoursesButton.classList.add('active', 'btn-primary');
+        }
+
+        // Update the renderCourseList function to handle null category properly
         function renderCourseList(courseList = courses, category = null) {
             const courseListElement = document.getElementById('courseList');
-            let filteredCourses = courseList;
-
-            if (category && category !== 'all') {
-                filteredCourses = courseList.filter(course => course.category === category);
-            }
+            const filteredCourses = category ? courseList.filter(course => course.category === category) : courseList;
 
             courseListElement.innerHTML = filteredCourses.map(createCourseCard).join('');
 
@@ -847,34 +845,14 @@
             document.getElementById('courseCount').textContent = `${filteredCourses.length} courses`;
 
             // Add event listeners to view course buttons
-            const viewButtons = document.querySelectorAll('.view-course');
-            viewButtons.forEach(button => {
+            const viewButtons = courseListElement.querySelectorAll('.view-course');
+            viewButtons.forEach((button) => {
                 button.addEventListener('click', (e) => {
                     const courseId = parseInt(e.target.getAttribute('data-course-id'));
-                    const course = courses.find(c => c.id === courseId);
+                    const course = courses.find((c) => c.id === courseId);
                     if (course) {
                         displayCourseDetails(course);
                     }
-                });
-            });
-        }
-
-        // Function to create category buttons
-        function createCategoryButtons() {
-            const categoryContainer = document.getElementById('categoryContainer');
-            categoryContainer.innerHTML = `
-        <button class="btn btn-outline-primary me-2 mb-2" data-category="all">All Courses</button>
-        ${courseCategories.map(category =>
-                `<button class="btn btn-outline-primary me-2 mb-2" data-category="${category}">${category}</button>`
-            ).join('')}
-    `;
-
-            // Add event listeners to category buttons
-            const buttons = categoryContainer.querySelectorAll('button');
-            buttons.forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const category = e.target.getAttribute('data-category');
-                    renderCourseList(courses, category);
                 });
             });
         }
@@ -883,7 +861,7 @@
         function searchCourses() {
             const searchInput = document.getElementById('searchInput');
             const searchTerm = searchInput.value.toLowerCase();
-            const filteredCourses = courses.filter(course =>
+            const filteredCourses = courses.filter((course) =>
                 course.title.toLowerCase().includes(searchTerm) ||
                 course.description.toLowerCase().includes(searchTerm)
             );
@@ -899,18 +877,15 @@
         document.getElementById('searchInput').addEventListener('input', searchCourses);
 
 
-
-        // JavaScript for login functionality
         document.addEventListener('DOMContentLoaded', function () {
             const loginButton = document.getElementById('loginButton');
             const loginContainer = document.getElementById('loginContainer');
             const profileContainer = document.getElementById('profileContainer');
             const userEmail = document.getElementById('userEmail');
             const logoutButton = document.getElementById('logoutButton');
-            const profileDropdown = document.getElementById('profileDropdown');
 
             function updateLoginState() {
-                const loggedInUser = localStorage.getItem('loggedInUser ');
+                const loggedInUser = localStorage.getItem('loggedInUser');
                 if (loggedInUser) {
                     loginContainer.style.display = 'none';
                     profileContainer.style.display = 'block';
@@ -926,196 +901,44 @@
             });
 
             logoutButton.addEventListener('click', function () {
-                localStorage.removeItem('loggedInUser  ');
+                localStorage.removeItem('loggedInUser');
                 updateLoginState();
+                window.location.href = 'course.html';
             });
 
-            // Add event listener for dropdown toggle
-            profileDropdown.addEventListener('click', function (event) {
-                event.stopPropagation();
-                const dropdownMenu = this.nextElementSibling;
-                dropdownMenu.classList.toggle('show');
-            });
-
-            // Close dropdown when clicking outside
-            document.addEventListener('click', function (event) {
-                const dropdowns = document.getElementsByClassName('dropdown-menu');
-                for (let i = 0; i < dropdowns.length; i++) {
-                    const openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('show')) {
-                        openDropdown.classList.remove('show');
-                    }
-                }
-            });
-
+            // Call updateLoginState when the page loads
             updateLoginState();
 
-
-            // Function to sort courses
-            function sortCourses(sortBy) {
-                let sortedCourses = [...courses];
-                switch (sortBy) {
-                    case 'popularity':
-                        sortedCourses.sort((a, b) => b.ratingCount - a.ratingCount);
-                        break;
-                    case 'rating':
-                        sortedCourses.sort((a, b) => b.rating - a.rating);
-                        break;
-                    case 'newest':
-                        sortedCourses.sort((a, b) => b.dateAdded - a.dateAdded);
-                        break;
-                }
-                renderCourseList(sortedCourses);
-             }
-
-            // Event listeners for sort dropdown
-            document.querySelectorAll('#sortDropdown .dropdown-item').forEach(item => {
-                item.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const sortBy = e.target.getAttribute('data-sort');
-                    sortCourses(sortBy);
-                });
-            });
+            // Check login state every second (for demonstration purposes)
+            setInterval(updateLoginState, 1000);
         });
+
+        // Add this to your login.html page
+        function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Here you would typically validate the credentials with a server
+            // For this example, we'll just check if the email and password are not empty
+            if (email && password) {
+                localStorage.setItem('loggedInUser', email);
+                alert('Login successful!');
+                window.location.href = 'course.html';
+            } else {
+                alert('Please enter both email and password');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('loggedInUser');
+            updateLoginState();
+            window.location.href = 'course.html'; // Redirect to the home page after logout
+        }
+
 
         // Initialize the page
         createCategoryButtons();
         renderCourseList();
-
-        let model;
-        let courseData;
-
-        document.addEventListener('DOMContentLoaded', async function () {
-            const chatButton = document.getElementById('chat-button');
-            const chatContainer = document.getElementById('chat-container');
-            const closeChat = document.getElementById('close-chat');
-            const sendMessage = document.getElementById('send-message');
-            const userInput = document.getElementById('user-input');
-            const chatMessages = document.getElementById('chat-messages');
-
-            // Load TensorFlow model
-            model = await tf.loadLayersModel('https://storage.googleapis.com/tfjs-models/tfjs/sentiment_cnn_v1/model.json');
-
-            // Fetch course data from hypothetical API
-            courseData = await fetchCourseData();
-
-            chatButton.addEventListener('click', () => {
-                chatContainer.style.display = 'flex';
-                chatButton.style.display = 'none';
-            });
-
-            closeChat.addEventListener('click', () => {
-                chatContainer.style.display = 'none';
-                chatButton.style.display = 'flex';
-            });
-
-            sendMessage.addEventListener('click', sendUserMessage);
-            userInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    sendUserMessage();
-                }
-            });
-
-            async function sendUserMessage() {
-                const message = userInput.value.trim();
-                if (message) {
-                    addMessage(message, 'user-message');
-                    userInput.value = '';
-                    const botReply = await getBotReply(message);
-                    addMessage(botReply, 'bot-message');
-                }
-            }
-
-            function addMessage(message, className) {
-                const messageElement = document.createElement('div');
-                messageElement.classList.add('message', className);
-                messageElement.textContent = message;
-                chatMessages.appendChild(messageElement);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-
-            async function getBotReply(message) {
-                const intent = await classifyIntent(message);
-                let reply;
-
-                switch (intent) {
-                    case 'course_info':
-                        reply = "We offer a wide range of courses. Can you tell me which subject area you're interested in?";
-                        break;
-                    case 'pricing':
-                        reply = "Our course prices vary. We offer flexible payment options and financial aid for eligible students. Which course are you interested in?";
-                        break;
-                    case 'duration':
-                        reply = "Course duration varies from a few weeks to several months. It depends on the program and your learning pace. Which course are you considering?";
-                        break;
-                    case 'certification':
-                        reply = "Yes, upon successful completion of your chosen program, you'll receive a verified certificate.";
-                        break;
-                    case 'career':
-                        reply = "Many of our graduates have successfully transitioned into new careers or advanced in their current roles. We also offer career services and job placement assistance.";
-                        break;
-                    default:
-                        reply = "I'm not sure I understand. Could you rephrase your question?";
-                }
-
-                // Suggest courses based on user message
-                const suggestedCourse = await suggestCourse(message);
-                if (suggestedCourse) {
-                    reply += `\n\nBased on your interest, you might like our ${suggestedCourse.title} course. Would you like more information?`;
-                    addCourseSuggestion(suggestedCourse);
-                }
-
-                return reply;
-            }
-
-            async function classifyIntent(message) {
-                const embedding = await use.load();
-                const sentences = [message];
-                const xPredict = await embedding.embed(sentences);
-                const sentiment = await model.predict(xPredict).data();
-
-                // Simple intent classification based on sentiment
-                if (sentiment[0] > 0.7) return 'course_info';
-                if (sentiment[0] > 0.5) return 'pricing';
-                if (sentiment[0] > 0.3) return 'duration';
-                if (sentiment[0] > 0.1) return 'certification';
-                return 'career';
-            }
-
-            async function suggestCourse(message) {
-                // Simple keyword matching for course suggestion
-                const keywords = {
-                    'web': 'Web Development',
-                    'data': 'Data Science',
-                    'marketing': 'Digital Marketing',
-                    'ai': 'Artificial Intelligence',
-                    'business': 'Business Analytics'
-                };
-
-                for (let [keyword, course] of Object.entries(keywords)) {
-                    if (message.toLowerCase().includes(keyword)) {
-                        return courseData.find(c => c.title === course);
-                    }
-                }
-
-                return null;
-            }
-
-            function addCourseSuggestion(course) {
-                const suggestionElement = document.createElement('div');
-                suggestionElement.classList.add('course-suggestion');
-                suggestionElement.innerHTML = `
-                <h4>${course.title}</h4>
-                <p>${course.description}</p>
-                <button onclick="enrollCourse('${course.id}')">Enroll Now</button>
-            `;
-                chatMessages.appendChild(suggestionElement);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-
-            // Initial bot message
-            addMessage("Hello! How can I assist you today?", 'bot-message');
-        });
 
         async function fetchCourseData() {
             // In a real implementation, this would be an API call
@@ -1128,10 +951,412 @@
             ];
         }
 
-        function enrollCourse(courseId) {
-            // In a real implementation, this would initiate the enrollment process
-            alert(`Enrolling in course with ID: ${courseId}`);
+        // Add price property to each course in the courses array
+        courses.forEach(course => {
+            // Assign prices based on difficulty level
+            switch (course.difficulty) {
+                case 'beginner':
+                    course.price = 49.99;
+                    break;
+                case 'intermediate':
+                    course.price = 79.99;
+                    break;
+                case 'advanced':
+                    course.price = 99.99;
+                    break;
+                default:
+                    course.price = 59.99;
+            }
+        });
+
+        // Available coupon codes and their discount percentages
+        const validCoupons = {
+            'NEWUSER20': 20,
+            'SUMMER25': 25,
+            'FLASH15': 15
+        };
+
+        // Function to create and display checkout page
+        function displayCheckoutPage(course) {
+            const courseDetails = document.getElementById('courseDetails');
+            courseDetails.style.display = 'none';
+
+            // Create checkout container if it doesn't exist
+            let checkoutContainer = document.getElementById('checkoutContainer');
+            if (!checkoutContainer) {
+                checkoutContainer = document.createElement('div');
+                checkoutContainer.id = 'checkoutContainer';
+                document.body.appendChild(checkoutContainer);
+            }
+
+            const userEmail = localStorage.getItem('loggedInUser') || 'Not logged in';
+
+            checkoutContainer.innerHTML = `
+        <!-- Checkout Modal -->
+<div class="checkout-modal">
+    <div class="checkout-content">
+        <h2 class="checkout-title">Course Enrollment Checkout</h2>
+        <div class="course-summary">
+            <h3>Order Summary</h3>
+            <div class="course-info">
+                <img src="${course.image}" alt="${course.title}" class="course-image">
+                <h4 class="course-title">${course.title}</h4>
+                <p class="course-instructor">Instructor: ${course.instructor.name}</p>
+            </div>
+            <div class="price-details">
+                <div class="price-row">
+                    <span>Original Price:</span>
+                    <span class="price">$${course.price.toFixed(2)}</span>
+                </div>
+                <div class="coupon-section">
+                    <input type="text" id="couponCode" placeholder="Enter coupon code" class="form-control">
+                    <button onclick="applyCoupon('${course.id}')" class="btn btn-secondary">Apply Coupon</button>
+                    <span id="couponMessage" class="coupon-message"></span>
+                </div>
+                <div class="price-row discount" style="display: none;">
+                    <span>Discount:</span>
+                    <span id="discountAmount">-$0.00</span>
+                </div>
+                <div class="price-row total">
+                    <span>Total:</span>
+                    <span id="totalPrice">$${course.price.toFixed(2)}</span>
+                </div>
+            </div>
+        </div>
+        <div class="user-info">
+            <h3>Student Information</h3>
+            <p>Email: ${userEmail}</p>
+        </div>
+        <div class="checkout-buttons">
+            <button onclick="processEnrollment('${course.id}')" class="btn btn-primary">Complete Enrollment</button>
+            <button onclick="closeCheckout()" class="btn btn-secondary">Cancel</button>
+        </div>
+    </div>
+</div>
+    `;
+
+            // Add styles for checkout page
+            const style = document.createElement('style');
+            style.textContent = `
+        .checkout-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+    .checkout-content {
+        background-color: #fff;
+        padding: 2rem;
+        border-radius: 10px;
+        max-width: 600px;
+        width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+    .checkout-title {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        text-align: center;
+        color: var(--primary-color);
+    }
+    .course-summary {
+        margin: 1rem 0;
+        padding: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+    .course-image {
+        max-width: 100px;
+        border-radius: 5px;
+    }
+    .course-title {
+        font-size: 1.5rem;
+        margin: 0.5rem 0;
+    }
+    .course-instructor {
+        color: #555;
+    }
+    .price-details {
+ margin: 1rem 0;
+    }
+    .price-row {
+        display: flex;
+        justify-content: space-between;
+        margin: 0.5rem 0;
+    }
+    .price {
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+    .coupon-section {
+        margin: 1rem 0;
+    }
+    .coupon-message {
+        color: #666;
+        font-size: 0.9rem;
+    }
+    .checkout-buttons {
+        margin: 1rem 0;
+        display: flex;
+        justify-content: space-between;
+    }
+    .btn {
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 5px;
+        font-size: 1.2rem;
+        cursor: pointer;
+    }
+    .btn-primary {
+        background-color: var(--primary-color);
+        color: #fff;
+    }
+    .btn-secondary {
+        background-color: #666;
+        color: #fff;
+    }
+    .btn:hover {
+        opacity: 0.8;
+    }
+    `;
+            document.head.appendChild(style);
         }
+
+        // Function to apply coupon code
+        function applyCoupon(courseId) {
+            const couponInput = document.getElementById('couponCode');
+            const couponMessage = document.getElementById('couponMessage');
+            const discountRow = document.querySelector('.price-row.discount');
+            const discountAmount = document.getElementById('discountAmount');
+            const totalPrice = document.getElementById('totalPrice');
+            const course = courses.find(c => c.id === parseInt(courseId));
+
+            const couponCode = couponInput.value.trim().toUpperCase();
+
+            if (validCoupons.hasOwnProperty(couponCode)) {
+                const discountPercentage = validCoupons[couponCode];
+                const discount = (course.price * discountPercentage) / 100;
+                const finalPrice = course.price - discount;
+
+                discountRow.style.display = 'flex';
+                discountAmount.textContent = `-$${discount.toFixed(2)}`;
+                totalPrice.textContent = `$${finalPrice.toFixed(2)}`;
+                couponMessage.innerHTML = `<span style="color: green;">Coupon applied successfully! ${discountPercentage}% off</span>`;
+
+                // Clear the coupon input field
+                couponInput.value = '';
+            } else {
+                couponMessage.innerHTML = `<span style="color: red;">Invalid coupon code</span>`;
+                discountRow.style.display = 'none';
+                totalPrice.textContent = `$${course.price.toFixed(2)}`;
+            }
+        }
+
+        // Function to process enrollment
+        function processEnrollment(courseId) {
+            const course = courses.find(c => c.id === parseInt(courseId));
+            const userEmail = localStorage.getItem('loggedInUser ');
+
+            if (!userEmail) {
+                alert('Please log in to enroll in the course');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Here you would typically integrate with a payment processing system
+            // For now, we'll just simulate a successful enrollment
+            course.enrolled = true;
+            course.progress = 0;
+
+            alert(`Enrollment successful!\n\nCourse: ${course.title}\nEmail: ${userEmail}`);
+            closeCheckout();
+            displayCourseDetails(course);
+        }
+
+        // Function to close checkout
+        function closeCheckout() {
+            const checkoutContainer = document.getElementById('checkoutContainer');
+            if (checkoutContainer) {
+                checkoutContainer.remove();
+            }
+        }
+
+        // Update the enrollCourse function to use the new checkout system
+        function enrollCourse(courseId) {
+            const course = courses.find(c => c.id === parseInt(courseId));
+            if (course) {
+                displayCheckoutPage(course);
+            }
+        }
+
+        // Add the chat UI elements
+const chatHTML = `
+<div class="chat-button" id="chatButton">
+    <i class="fas fa-comments"></i>
+</div>
+
+<div class="chat-container" id="chatContainer">
+    <div class="chat-header">
+        <h3>Course Assistant</h3>
+        <button id="close-chat">&times;</button>
+    </div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="chat-input">
+        <input type="text" id="user-input" placeholder="Ask me anything...">
+        <button id="send-message">Send</button>
+    </div>
+</div>
+`;
+
+// Add the chat HTML to the body
+document.body.insertAdjacentHTML('beforeend', chatHTML);
+
+// Chat functionality
+class CourseBot {
+    constructor() {
+        this.chatMessages = document.getElementById('chatMessages');
+        this.chatButton = document.getElementById('chatButton');
+        this.chatContainer = document.getElementById('chatContainer');
+        this.closeChat = document.getElementById('close-chat');
+        this.userInput = document.getElementById('user-input');
+        this.sendButton = document.getElementById('send-message');
+
+        this.initializeEventListeners();
+        this.previousMessages = [];
+    }
+
+    initializeEventListeners() {
+        this.chatButton.addEventListener('click', () => this.toggleChat());
+        this.closeChat.addEventListener('click', () => this.toggleChat());
+        this.sendButton.addEventListener('click', () => this.handleUserMessage());
+        this.userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                this.handleUserMessage();
+            }
+        });
+    }
+
+    toggleChat() {
+        const isVisible = this.chatContainer.style.display === 'flex';
+        this.chatContainer.style.display = isVisible ? 'none' : 'flex';
+        if (!isVisible && this.previousMessages.length === 0) {
+            this.addBotMessage("Hello! I'm your course assistant. I can help you find courses, answer questions about our programs, or provide recommendations. How can I help you today?");
+        }
+    }
+
+    addUserMessage(message) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message user-message';
+        messageDiv.textContent = message;
+        this.chatMessages.appendChild(messageDiv);
+        this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+        this.previousMessages.push({ role: 'user', content: message });
+    }
+
+    addBotMessage(message) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message bot-message';
+        messageDiv.textContent = message;
+        this.chatMessages.appendChild(messageDiv);
+        this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+        this.previousMessages.push({ role: 'bot', content: message });
+    }
+
+    async handleUserMessage() {
+        const message = this.userInput.value.trim();
+        if (message) {
+            this.addUserMessage(message);
+            this.userInput.value = '';
+            
+            const response = await this.generateResponse(message);
+            this.addBotMessage(response);
+
+            // If the response includes course suggestions, add them
+            const suggestions = this.findCourseSuggestions(message);
+            if (suggestions.length > 0) {
+                this.addCourseSuggestions(suggestions);
+            }
+        }
+    }
+
+    generateResponse(message) {
+        const lowerMessage = message.toLowerCase();
+        
+        // Basic response logic
+        if (lowerMessage.includes('hello') || lowerMessage.includes('hi')) {
+            return "Hello! How can I help you with your course selection today?";
+        }
+        
+        if (lowerMessage.includes('recommend') || lowerMessage.includes('suggestion')) {
+            if (lowerMessage.includes('beginner')) {
+                return "I recommend starting with our 'Python for Beginners' or 'Responsive Web Design' courses. Would you like to learn more about either of these?";
+            }
+            if (lowerMessage.includes('advanced')) {
+                return "For advanced learners, I recommend 'Advanced Java Programming' or 'Deep Learning and Neural Networks'. Would you like details about these courses?";
+            }
+        }
+
+        if (lowerMessage.includes('price') || lowerMessage.includes('cost')) {
+            return "Our courses range from $49.99 for beginner courses to $99.99 for advanced courses. We also offer regular discounts and promotional codes. Would you like to know about our current offers?";
+        }
+
+        if (lowerMessage.includes('duration') || lowerMessage.includes('how long')) {
+            return "Most of our courses range from 4 to 12 weeks in duration, depending on the complexity and depth of the content. Would you like to know about a specific course's duration?";
+        }
+
+        if (lowerMessage.includes('certificate')) {
+            return "Yes, you'll receive a certificate of completion for all our courses once you finish the curriculum. These certificates can be shared on LinkedIn and other professional platforms.";
+        }
+
+        if (lowerMessage.includes('refund') || lowerMessage.includes('money back')) {
+            return "We offer a 30-day money-back guarantee if you're not satisfied with your course. Would you like more details about our refund policy?";
+        }
+
+        // Default response with course categories
+        return "I can help you find courses in various categories including Programming, Web Development, Data Science, AI, and more. What subject interests you the most?";
+    }
+
+    findCourseSuggestions(message) {
+        const lowerMessage = message.toLowerCase();
+        return courses.filter(course => {
+            const relevantText = `${course.title} ${course.description} ${course.category}`.toLowerCase();
+            return relevantText.includes(lowerMessage);
+        }).slice(0, 3); // Limit to 3 suggestions
+    }
+
+    addCourseSuggestions(suggestions) {
+        suggestions.forEach(course => {
+            const suggestionDiv = document.createElement('div');
+            suggestionDiv.className = 'course-suggestion';
+            suggestionDiv.innerHTML = `
+                <h4>${course.title}</h4>
+                <p>${course.description}</p>
+                <button onclick="viewCourse(${course.id})">View Course</button>
+            `;
+            this.chatMessages.appendChild(suggestionDiv);
+        });
+        this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+    }
+}
+
+// Initialize chatbot
+const chatbot = new CourseBot();
+
+// Function to view course from chat suggestions
+function viewCourse(courseId) {
+    const course = courses.find(c => c.id === courseId);
+    if (course) {
+        displayCourseDetails(course);
+    }
+}
     </script>
 </body>
 

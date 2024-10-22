@@ -419,6 +419,229 @@
             /* Keep the border radius to maintain the circular shape */
         }
 
+        /* .chat-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #4a90e2;
+            color: white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .chat-button i {
+            font-size: 24px;
+        }
+
+        .chat-container {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 300px;
+            height: 400px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            z-index: 1000;
+        }
+
+        .chat-header {
+            background-color: #4a90e2;
+            color: white;
+            padding: 10px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h3 {
+            margin: 0;
+        }
+
+        #close-chat {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 10px;
+        }
+
+        #user-input {
+            flex-grow: 1;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        #send-message {
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            margin-left: 5px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .message {
+            margin-bottom: 10px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            max-width: 80%;
+        }
+
+        .user-message {
+            background-color: #e6f2ff;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+
+        .bot-message {
+            background-color: #f0f0f0;
+            align-self: flex-start;
+        }
+
+        .course-suggestion {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        .course-suggestion h4 {
+            margin-top: 0;
+        }
+
+        .course-suggestion button {
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-top: 5px;
+        } */
+
+        /* New styles for course enrollment and my courses */
+        .course-enrollment {
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .course-enrollment h2 {
+            margin-top: 0;
+        }
+
+        .price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #337ab7;
+        }
+
+        .coupon-form {
+            margin-top: 20px;
+        }
+
+        .coupon-form input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+        }
+
+        .coupon-form button[type="submit"] {
+            background-color: #337ab7;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .coupon-form button[type="submit"]:hover {
+            background-color: #23527c;
+        }
+
+        #coupon-message {
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        #enroll-button {
+            background-color: #337ab7;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #enroll-button:hover {
+            background-color: #23527c;
+        }
+
+        #enrollment-message {
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        .my-courses {
+            padding: 2rem;
+        }
+
+        .course-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .course-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .progress-bar {
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background-color: #4a90e2;
+            transition: width 0.3s ease;
+        }
+
         .chat-button {
             position: fixed;
             bottom: 20px;
@@ -544,103 +767,6 @@
             cursor: pointer;
             margin-top: 5px;
         }
-
-        /* New styles for course enrollment and my courses */
-        .course-enrollment {
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .course-enrollment h2 {
-            margin-top: 0;
-        }
-
-        .price {
-            font-size: 18px;
-            font-weight: bold;
-            color: #337ab7;
-        }
-
-        .coupon-form {
-            margin-top: 20px;
-        }
-
-        .coupon-form input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-        }
-
-        .coupon-form button[type="submit"] {
-            background-color: #337ab7;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .coupon-form button[type="submit"]:hover {
-            background-color: #23527c;
-        }
-
-        #coupon-message {
-            margin-top: 10px;
-            font-size: 16px;
-        }
-
-        #enroll-button {
-            background-color: #337ab7;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        #enroll-button:hover {
-            background-color: #23527c;
-        }
-
-        #enrollment-message {
-            margin-top: 10px;
-            font-size: 16px;
-        }
-
-        .my-courses {
-            padding: 2rem;
-        }
-
-        .course-card {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .course-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-        }
-
-        .progress-bar {
-            height: 20px;
-            background-color: #e0e0e0;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            background-color: #4a90e2;
-            transition: width 0.3s ease;
-        }
     </style>
 </head>
 
@@ -672,12 +798,12 @@
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
                         <li><a class="dropdown-item" id="userEmail" href="#"></a></li>
+                        <li><a class="dropdown-item" href="#">My Courses</a></li>
                         <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><a class="dropdown-item" href="#">My Account</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" id="logoutButton" href="#">Logout</a></li>
+                        <li><button class="dropdown-item" id="logoutButton">Logout</button></li>
                     </ul>
                 </div>
             </div>
@@ -980,27 +1106,11 @@
         </div>
     </footer>
 
-    <!-- Chat button -->
-    <div id="chat-button" class="chat-button">
-        <i class="fas fa-comments"></i>
-    </div>
-
-    <!-- Chat container -->
-    <div id="chat-container" class="chat-container">
-        <div class="chat-header">
-            <h3>EduTech Assistant</h3>
-            <button id="close-chat">×</button>
-        </div>
-        <div id="chat-messages" class="chat-messages"></div>
-        <div class="chat-input">
-            <input type="text" id="user-input" placeholder="Type your message...">
-            <button id="send-message">Send</button>
-        </div>
-    </div>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder"></script>
 
     <script>
+        // Add this script to all your HTML pages (index.html, course.html, etc.)
         document.addEventListener('DOMContentLoaded', function () {
             const loginButton = document.getElementById('loginButton');
             const loginContainer = document.getElementById('loginContainer');
@@ -1028,173 +1138,74 @@
             logoutButton.addEventListener('click', function () {
                 localStorage.removeItem('loggedInUser');
                 updateLoginState();
+                window.location.href = 'index.html'; // Redirect to the home page after logout
             });
 
-            // Add event listener for dropdown toggle
-            profileDropdown.addEventListener('click', function (event) {
-                event.stopPropagation();
-                const dropdownMenu = this.nextElementSibling;
-                dropdownMenu.classList.toggle('show');
+            // Initialize Bootstrap dropdowns
+            var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'))
+            var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
+                return new bootstrap.Dropdown(dropdownToggleEl)
             });
 
-            // Close dropdown when clicking outside
-            document.addEventListener('click', function (event) {
-                const dropdowns = document.getElementsByClassName('dropdown-menu');
-                for (let i = 0; i < dropdowns.length; i++) {
-                    const openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('show')) {
-                        openDropdown.classList.remove('show');
-                    }
-                }
-            });
-
+            // Call updateLoginState when the page loads
             updateLoginState();
         });
 
-        let courseData;
+        // Add this to your login.html page
+        function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
 
-        document.addEventListener('DOMContentLoaded', async function () {
-            const chatButton = document.getElementById('chat-button');
-            const chatContainer = document.getElementById('chat-container');
-            const closeChat = document.getElementById('close-chat');
-            const sendMessage = document.getElementById('send-message');
-            const userInput = document.getElementById('user-input');
-            const chatMessages = document.getElementById('chat-messages');
+            // Here you would typically validate the credentials with a server
+            // For this example, we'll just check if the email and password are not empty
+            if (email && password) {
+                localStorage.setItem('loggedInUser ', email);
+                updateLoginState(); // Call the function to update the login state
+                alert('Login successful!');
+                window.location.href = 'index.html'; // Redirect to the home page after login
+            } else {
+                alert('Please enter both email and password');
+            }
+        }
 
-            // Fetch course data from hypothetical API
-            courseData = await fetchCourseData();
+        function updateLoginState() {
+            const loggedInUser = localStorage.getItem('loggedInUser ');
+            const loginButton = document.getElementById('loginButton');
+            const profileContainer = document.getElementById('profileContainer');
 
-            chatButton.addEventListener('click', () => {
-                chatContainer.style.display = 'flex';
-                chatButton.style.display = 'none';
-            });
+            if (loggedInUser) {
+                loginButton.style.display = 'none'; // Hide the login button
+                profileContainer.style.display = 'block'; // Display the profile dropdown
+            } else {
+                loginButton.style.display = 'block'; // Display the login button
+                profileContainer.style.display = 'none'; // Hide the profile dropdown
+            }
+        }
 
-            closeChat.addEventListener('click', () => {
-                chatContainer.style.display = 'none';
-                chatButton.style.display = 'flex';
-            });
+        // Add this to your logout function (if you have one):
+        function logout() {
+            localStorage.removeItem('loggedInUser');
+            updateLoginState();
+            window.location.href = 'index.html'; // Redirect to the home page after logout
+        }
+        // Add event listener for dropdown toggle
+        profileDropdown.addEventListener('click', function (event) {
+            event.stopPropagation();
+            const dropdownMenu = this.nextElementSibling;
+            dropdownMenu.classList.toggle('show');
+        });
 
-            sendMessage.addEventListener('click', sendUserMessage);
-            userInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    sendUserMessage();
-                }
-            });
-
-            async function sendUserMessage() {
-                const message = userInput.value.trim();
-                if (message) {
-                    addMessage(message, 'user-message');
-                    userInput.value = '';
-                    const botReply = await getBotReply(message);
-                    addMessage(botReply, 'bot-message');
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function (event) {
+            const dropdowns = document.getElementsByClassName('dropdown-menu');
+            for (let i = 0; i < dropdowns.length; i++) {
+                const openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
                 }
             }
 
-            function addMessage(message, className) {
-                const messageElement = document.createElement('div');
-                messageElement.classList.add('message', className);
-                messageElement.textContent = message;
-                chatMessages.appendChild(messageElement);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-
-            async function getBotReply(message) {
-                const lowerMessage = message.toLowerCase();
-                let reply;
-
-                // Greetings
-                if (lowerMessage.includes('hi') || lowerMessage.includes('hello') || lowerMessage.includes('hey')) {
-                    reply = "Hello there! How can I assist you today?";
-                }
-                // Farewells
-                else if (lowerMessage.includes('bye') || lowerMessage.includes('goodbye')) {
-                    reply = "Goodbye! If you have any more questions, feel free to ask anytime.";
-                }
-                // General inquiries about EduTech
-                else if (lowerMessage.includes('about edutech') || lowerMessage.includes('what is edutech')) {
-                    reply = "EduTech is a leading online education platform dedicated to empowering learners worldwide. We offer a wide range of courses in various fields like technology, business, and more.";
-                }
-                // Course information
-                else if (lowerMessage.includes('course') || lowerMessage.includes('class')) {
-                    reply = "We offer a variety of courses including Web Development, Data Science, Digital Marketing, Artificial Intelligence, and Business Analytics. Which area are you interested in?";
-                }
-                // Pricing inquiries
-                else if (lowerMessage.includes('price') || lowerMessage.includes('cost')) {
-                    reply = "Our course prices vary depending on the program. We offer flexible payment options and financial aid for eligible students. Would you like information on a specific course's pricing?";
-                }
-                // Course duration
-                else if (lowerMessage.includes('duration') || lowerMessage.includes('how long')) {
-                    reply = "Course duration varies from a few weeks to several months, depending on the program and your pace of learning. Can you tell me which course you're interested in for more specific information?";
-                }
-                // Certificates
-                else if (lowerMessage.includes('certificate') || lowerMessage.includes('certification')) {
-                    reply = "Yes, upon successful completion of your chosen program, you'll receive a verified certificate that you can share with employers or add to your resume.";
-                }
-                // Career prospects
-                else if (lowerMessage.includes('job') || lowerMessage.includes('career')) {
-                    reply = "Many of our graduates have successfully transitioned into new careers or advanced in their current roles. We also offer career services and job placement assistance for eligible programs.";
-                }
-                // How to enroll
-                else if (lowerMessage.includes('enroll') || lowerMessage.includes('sign up') || lowerMessage.includes('register')) {
-                    reply = "Enrolling in a course is easy! Simply choose your desired course, click on the 'Enroll Now' button, and follow the registration process. Would you like me to suggest a course?";
-                }
-                // Support or help
-                else if (lowerMessage.includes('help') || lowerMessage.includes('support')) {
-                    reply = "Our support team is always ready to help! You can reach out to us at support@edutech.com or through the 'Help' section on our website. What kind of assistance do you need?";
-                }
-                // Gratitude
-                else if (lowerMessage.includes('thank')) {
-                    reply = "You're welcome! I'm glad I could help. Is there anything else you'd like to know?";
-                }
-                // Default response for unrecognized queries
-                else {
-                    reply = "I'm not sure I understand. Could you please rephrase your question or ask about our courses, pricing, enrollment process, or support services?";
-                }
-
-                // Suggest courses based on user message
-                const suggestedCourse = await suggestCourse(message);
-                if (suggestedCourse) {
-                    reply += `\n\nBased on your interest, you might like our ${suggestedCourse.title} course. Would you like more information about it?`;
-                    addCourseSuggestion(suggestedCourse);
-                }
-
-                return reply;
-            }
-
-            async function suggestCourse(message) {
-                const lowerMessage = message.toLowerCase();
-                const keywords = {
-                    'web': 'Web Development',
-                    'data': 'Data Science',
-                    'marketing': 'Digital Marketing',
-                    'ai': 'Artificial Intelligence',
-                    'business': 'Business Analytics'
-                };
-
-                for (let [keyword, course] of Object.entries(keywords)) {
-                    if (lowerMessage.includes(keyword)) {
-                        return courseData.find(c => c.title === course);
-                    }
-                }
-
-                return null;
-            }
-
-            function addCourseSuggestion(course) {
-                const suggestionElement = document.createElement('div');
-                suggestionElement.classList.add('course-suggestion');
-                suggestionElement.innerHTML = `
-                <h4>${course.title}</h4>
-                <p>${course.description}</p>
-                <button onclick="enrollCourse('${course.id}')">Enroll Now</button>
-            `;
-                chatMessages.appendChild(suggestionElement);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-
-            // Initial bot message
-            addMessage("Hello! How can I assist you today?", 'bot-message');
+            updateLoginState();
         });
 
         async function fetchCourseData() {
@@ -1376,7 +1387,166 @@
             document.getElementById('about').style.display = 'block';
             document.getElementById('testimonials').style.display = 'block';
         });
+// Add the chat UI elements
+const chatHTML = `
+<div class="chat-button" id="chatButton">
+    <i class="fas fa-comments"></i>
+</div>
 
+<div class="chat-container" id="chatContainer">
+    <div class="chat-header">
+        <h3>Course Assistant</h3>
+        <button id="close-chat">&times;</button>
+    </div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="chat-input">
+        <input type="text" id="user-input" placeholder="Ask me anything...">
+        <button id="send-message">Send</button>
+    </div>
+</div>
+`;
+
+// Add the chat HTML to the body
+document.body.insertAdjacentHTML('beforeend', chatHTML);
+
+// Chat functionality
+class CourseBot {
+    constructor() {
+        this.chatMessages = document.getElementById('chatMessages');
+        this.chatButton = document.getElementById('chatButton');
+        this.chatContainer = document.getElementById('chatContainer');
+        this.closeChat = document.getElementById('close-chat');
+        this.userInput = document.getElementById('user-input');
+        this.sendButton = document.getElementById('send-message');
+
+        this.initializeEventListeners();
+        this.previousMessages = [];
+    }
+
+    initializeEventListeners() {
+        this.chatButton.addEventListener('click', () => this.toggleChat());
+        this.closeChat.addEventListener('click', () => this.toggleChat());
+        this.sendButton.addEventListener('click', () => this.handleUserMessage());
+        this.userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                this.handleUserMessage();
+            }
+        });
+    }
+
+    toggleChat() {
+        const isVisible = this.chatContainer.style.display === 'flex';
+        this.chatContainer.style.display = isVisible ? 'none' : 'flex';
+        if (!isVisible && this.previousMessages.length === 0) {
+            this.addBotMessage("Hello! I'm your course assistant. I can help you find courses, answer questions about our programs, or provide recommendations. How can I help you today?");
+        }
+    }
+
+    addUserMessage(message) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message user-message';
+        messageDiv.textContent = message;
+        this.chatMessages.appendChild(messageDiv);
+        this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+        this.previousMessages.push({ role: 'user', content: message });
+    }
+
+    addBotMessage(message) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message bot-message';
+        messageDiv.textContent = message;
+        this.chatMessages.appendChild(messageDiv);
+        this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+        this.previousMessages.push({ role: 'bot', content: message });
+    }
+
+    async handleUserMessage() {
+        const message = this.userInput.value.trim();
+        if (message) {
+            this.addUserMessage(message);
+            this.userInput.value = '';
+            
+            const response = await this.generateResponse(message);
+            this.addBotMessage(response);
+
+            // If the response includes course suggestions, add them
+            const suggestions = this.findCourseSuggestions(message);
+            if (suggestions.length > 0) {
+                this.addCourseSuggestions(suggestions);
+            }
+        }
+    }
+
+    generateResponse(message) {
+        const lowerMessage = message.toLowerCase();
+        
+        // Basic response logic
+        if (lowerMessage.includes('hello') || lowerMessage.includes('hi')) {
+            return "Hello! How can I help you with your course selection today?";
+        }
+        
+        if (lowerMessage.includes('recommend') || lowerMessage.includes('suggestion')) {
+            if (lowerMessage.includes('beginner')) {
+                return "I recommend starting with our 'Python for Beginners' or 'Responsive Web Design' courses. Would you like to learn more about either of these?";
+            }
+            if (lowerMessage.includes('advanced')) {
+                return "For advanced learners, I recommend 'Advanced Java Programming' or 'Deep Learning and Neural Networks'. Would you like details about these courses?";
+            }
+        }
+
+        if (lowerMessage.includes('price') || lowerMessage.includes('cost')) {
+            return "Our courses range from $49.99 for beginner courses to $99.99 for advanced courses. We also offer regular discounts and promotional codes. Would you like to know about our current offers?";
+        }
+
+        if (lowerMessage.includes('duration') || lowerMessage.includes('how long')) {
+            return "Most of our courses range from 4 to 12 weeks in duration, depending on the complexity and depth of the content. Would you like to know about a specific course's duration?";
+        }
+
+        if (lowerMessage.includes('certificate')) {
+            return "Yes, you'll receive a certificate of completion for all our courses once you finish the curriculum. These certificates can be shared on LinkedIn and other professional platforms.";
+        }
+
+        if (lowerMessage.includes('refund') || lowerMessage.includes('money back')) {
+            return "We offer a 30-day money-back guarantee if you're not satisfied with your course. Would you like more details about our refund policy?";
+        }
+
+        // Default response with course categories
+        return "I can help you find courses in various categories including Programming, Web Development, Data Science, AI, and more. What subject interests you the most?";
+    }
+
+    findCourseSuggestions(message) {
+        const lowerMessage = message.toLowerCase();
+        return courses.filter(course => {
+            const relevantText = `${course.title} ${course.description} ${course.category}`.toLowerCase();
+            return relevantText.includes(lowerMessage);
+        }).slice(0, 3); // Limit to 3 suggestions
+    }
+
+    addCourseSuggestions(suggestions) {
+        suggestions.forEach(course => {
+            const suggestionDiv = document.createElement('div');
+            suggestionDiv.className = 'course-suggestion';
+            suggestionDiv.innerHTML = `
+                <h4>${course.title}</h4>
+                <p>${course.description}</p>
+                <button onclick="viewCourse(${course.id})">View Course</button>
+            `;
+            this.chatMessages.appendChild(suggestionDiv);
+        });
+        this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+    }
+}
+
+// Initialize chatbot
+const chatbot = new CourseBot();
+
+// Function to view course from chat suggestions
+function viewCourse(courseId) {
+    const course = courses.find(c => c.id === courseId);
+    if (course) {
+        displayCourseDetails(course);
+    }
+}
     </script>
 </body>
 
